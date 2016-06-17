@@ -1,0 +1,23 @@
+{
+  "name": "tsutillery",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -f logs/client/*; rm -f logs/server/*",
+    "compile": "tsc --outDir js",
+    "clean:src": "rm -f src/**/*.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "artillery": "^1.5.0-5",
+    "artillery-core": "^1.8.2"
+  },
+  "devDependencies": {
+    "typescript": "^1.8.10",
+    "typings": "^1.3.0"
+  }
+}

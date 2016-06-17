@@ -1,0 +1,1 @@
+{"config":{"target":"http://localhost:3333","phases":[{"duration":3,"arrivalRate":30}]},"scenarios":[{"flow":[{"get":{"url":"/"}}]}],"outputname":null}
