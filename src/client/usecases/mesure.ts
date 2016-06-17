@@ -18,8 +18,21 @@ export class Mesure {
     this.readServerlogGW = params.readServerlogGW;
   }
   run(config: SutyClientConfig) {
-    this.loadTestGW.run(config)
-    .then((resultpath) => this.readClientlogGW.run({ path: resultpath })).then(res => console.log(res)).catch(err => console.log(err))
+    const tests = this.createTests(config);
+    // tests.reduce((cur, pre) => {
+    //   return pre().then(() => cur());
+    // }, () => Promise.resolve(0));
+  }
+  createTests(config) {
+     return config.phases.map(phase => {
+      if(phase.pause) Promise.resolve() //後でsleepに;
+      config.duration = phase.duration;
+      config.rate = phase.arrivalRate;
+      config.logname = phase.name;
+      return () => this.loadTestGW.run(config)
+      .then((resultpath) => this.readClientlogGW.run({ path: resultpath }))
+      .then(res => console.log(res)).catch(err => console.log(err))
+    });
   }
 }
 

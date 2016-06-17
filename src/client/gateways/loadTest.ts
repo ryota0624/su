@@ -11,7 +11,8 @@ export interface SutyClientConfig {
   scenarios: any;
   logname: string;
   outputdir: string;
-  spreadSheetSoftwarePath: string
+  spreadSheetSoftwarePath: string;
+  phases: Array<{ duration: number, arrivalRate: number, name: string, pause?: number }>
 }
 export interface LoadTestGateway {
   run(config: SutyClientConfig): any;

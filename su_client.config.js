@@ -3,13 +3,13 @@ module.exports = {
   duration: 3, //テストする期間 second
   rate: 30, //リクエストの送信レート
   timeformat: 'ss', //サンプルを増やす milli secでとりたい時
-  // timeout: 30,
-  //     "phases": [
-  //     {"duration": 300, "arrivalRate": 5, "name": "Warm-up"},
-  //     {"pause": 10},
-  //     {"duration": 60, "arrivalCount": 30 },
-  //     {"duration": 600, "arrivalRate": 50, "name": "High load phase"}
-  //   ],
+  timeout: 30,
+  phases: [
+      {"duration": 3, "arrivalRate": 5, "name": "Warm-up"},
+      {"pause": 10},
+      {"duration": 3, "arrivalCount": 30 },
+      {"duration": 6, "arrivalRate": 50, "name": "High load phase"}
+    ],
   // scenarios: [
   //   {
   //     'flow': [{'get': {url: '/ad?spotId=4'}}]
