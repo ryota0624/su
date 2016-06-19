@@ -1,5 +1,5 @@
 module.exports = {
-  target: 'http://localhost:3333',//標的となるurl
+  target: 'http://localhost:3000',//標的となるurl
   duration: 3, //テストする期間 second
   rate: 30, //リクエストの送信レート
   timeformat: 'ss', //サンプルを増やす milli secでとりたい時

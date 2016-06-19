@@ -1,5 +1,5 @@
 import * as fs from '../../utils/promiseFs';
-interface Clientlog {
+export interface Clientlog {
   time: number;
   responseTime: number;
   statusCode: number;
@@ -12,13 +12,17 @@ function parseArtilleryLogs(latencies): Array<Clientlog> {
 }
 
 export interface ReadClientlog {
-  run({ path: number }): any;
+  readpath: string;
+  run(): Promise<Array<Clientlog>>;
 }
 
 export class ReadClientlogFS implements ReadClientlog {
-  run({ path }) {
-    console.log(path)
-    return fs.promiseReadFile(path)
+  readpath: string;
+  constructor({ path }: { path: string }) {
+    this.readpath = path;
+  }
+  run() {
+    return fs.promiseReadFile(this.readpath)
     .then((artilleryReportFile: any) =>  JSON.parse(artilleryReportFile).aggregate.latencies)
     .then(artilleryLogs => parseArtilleryLogs(artilleryLogs))
   }

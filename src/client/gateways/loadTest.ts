@@ -14,9 +14,12 @@ export interface SutyClientConfig {
   spreadSheetSoftwarePath: string;
   phases: Array<{ duration: number, arrivalRate: number, name: string, pause?: number }>
 }
+
 export interface LoadTestGateway {
-  run(config: SutyClientConfig): any;
+  resultpath: string;
+  run(config: SutyClientConfig): Promise<any>;
 }
+
 export interface ArtilleryConfig {
   config: {
     target: string;
@@ -25,9 +28,20 @@ export interface ArtilleryConfig {
   outputname: string;
   scenarios: Array<{ flow: Array<{ get: { url: string} }> }>
 }
-
+export class MockLoadTest implements LoadTestGateway {
+  resultpath: string;
+  constructor({ path }: { path: string }) {
+    this.resultpath = path;
+  }
+  run(config: SutyClientConfig) {
+    return Promise.resolve(this.resultpath);
+  }
+}
 export class ArtilleryGateway implements LoadTestGateway{
   resultpath: string;
+  constructor({ path }: { path: string }) {
+    this.resultpath = path;
+  }
   run(config: SutyClientConfig) {
     this.init(config);
     return getPromise(`${config.target}/suty/start`)
@@ -40,13 +54,12 @@ export class ArtilleryGateway implements LoadTestGateway{
   private test(config: SutyClientConfig) {
     return new Promise((res, rej) => {
       const spawn = require('child_process').spawn;
-      const outputpath = `${process.env.PWD}/logs/client/${config.logname}.${config.duration}.${config.rate}`;
       const artilleryPath = `${process.env.PWD}/node_modules/artillery/bin/artillery`;
-      const artillery = spawn(artilleryPath, ['run', `${__dirname}/config.json`, '-o', outputpath]);
+      const artillery = spawn(artilleryPath, ['run', `${__dirname}/config.json`, '-o', this.resultpath]);
       artillery.stdout.pipe(process.stdout);
       artillery.stderr.pipe(process.stderr);
       artillery.on('close', code => {
-        this.resultpath = outputpath + '.json';
+        //this.resultpath = outputpath + '.json';
         res(code);
       });
     });

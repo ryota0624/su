@@ -7,14 +7,17 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -f logs/client/*; rm -f logs/server/*",
     "compile": "tsc --outDir js",
-    "clean:src": "rm -f src/**/*.js"
+    "clean:src": "rm -f src/**/*.js",
+    "client": "node js/client/entry client",
+    "test:client": "node js/client/entry test:client"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "artillery": "^1.5.0-5",
-    "artillery-core": "^1.8.2"
+    "artillery-core": "^1.8.2",
+    "lodash": "^4.13.1"
   },
   "devDependencies": {
     "typescript": "^1.8.10",

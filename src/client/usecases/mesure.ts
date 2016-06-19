@@ -1,37 +1,39 @@
 import { ReadClientlog } from '../gateways/readClientlog';
-import { ReadServerlog } from '../gateways/readServerlog';
+import { MergeWithServerlog } from '../gateways/mergeWithServerlog';
 import { LoadTestGateway, SutyClientConfig } from '../gateways/loadTest';
-
+import { sleep } from '../../utils/sleep';
 export interface MesureParams {
   loadTestGW: LoadTestGateway, 
   readClientlogGW: ReadClientlog, 
-  readServerlogGW: ReadServerlog
+  mergeWithServerlogGW: MergeWithServerlog
 }
 
 export class Mesure {
   loadTestGW: LoadTestGateway;
   readClientlogGW: ReadClientlog;
-  readServerlogGW: ReadServerlog;
+  mergeWithServerlogGW: MergeWithServerlog
+
   constructor(params: MesureParams) {
     this.loadTestGW = params.loadTestGW;
     this.readClientlogGW = params.readClientlogGW;
-    this.readServerlogGW = params.readServerlogGW;
+    this.mergeWithServerlogGW = params.mergeWithServerlogGW;
   }
   run(config: SutyClientConfig) {
-    const tests = this.createTests(config);
-    // tests.reduce((cur, pre) => {
-    //   return pre().then(() => cur());
-    // }, () => Promise.resolve(0));
+    return this.loadTestGW.run(config)
+      .then(resultpath => this.readClientlogGW.run())
+      .then(clientlogs => this.mergeWithServerlogGW.run({ clientlogs }))
+      .then(mergedlogs => console.log(mergedlogs)).catch(err => console.log(err))
   }
-  createTests(config) {
+
+  createTests(config: SutyClientConfig) {
      return config.phases.map(phase => {
-      if(phase.pause) Promise.resolve() //後でsleepに;
+       if (phase.pause) return () => sleep(phase.pause); //後でsleepに;
       config.duration = phase.duration;
       config.rate = phase.arrivalRate;
       config.logname = phase.name;
       return () => this.loadTestGW.run(config)
-      .then((resultpath) => this.readClientlogGW.run({ path: resultpath }))
-      .then(res => console.log(res)).catch(err => console.log(err))
+      .then((resultpath) => this.readClientlogGW.run())
+      .then(res => console.log(res))
     });
   }
 }
