@@ -11,6 +11,9 @@ export default class ProcessState {
     this.server = state.server;
     this.time = state.server.time;
   }
+  getFlatState() {
+    return Object.assign({}, this.http, this.server);
+  }
 }
 
 export function processStateFactory(server, http) {

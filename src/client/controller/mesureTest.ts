@@ -1,14 +1,20 @@
 import { Mesure } from '../usecases/mesure';
-import { MockLoadTest } from '../gateways/loadTest';
-import { ReadClientlogFS } from '../gateways/readClientlog';
-import { ReadServerlogRequest } from '../gateways/readServerlog';
-import { MergeWithServerlogRequest, MergeWithServerlogFS } from '../gateways/mergeWithServerlog';
+import { OutputStatus } from '../usecases/outputStatus';
 
-export default function mesureController(config) {
+import { OutputCSVFile } from '../gateway/output';
+import { MockLoadTest } from '../gateway/loadTest';
+import { ReadClientlogFS } from '../gateway/readClientlog';
+import { ReadServerlogRequest } from '../gateway/readServerlog';
+import { MergeWithServerlogRequest, MergeWithServerlogFS } from '../gateway/mergeWithServerlog';
+
+export default function mesureController(config, repo) {
   const artillery = new MockLoadTest({ path: process.env.PWD + '/logs/client/date.3.30.json'});
   const readClientlog = new ReadClientlogFS({ path: process.env.PWD + '/logs/client/date.3.30.json'});
   const mergeWithServerlog = new MergeWithServerlogFS({ path: process.env.PWD + '/logs/server/date.3.30.csv'});
-  const mesureUsecase = new Mesure({ loadTestGW: artillery, readClientlogGW: readClientlog, mergeWithServerlogGW: mergeWithServerlog });
-  
-  mesureUsecase.run(config);
+  const mesureUsecase = new Mesure({ processStatusRepo: repo ,loadTestGW: artillery, readClientlogGW: readClientlog, mergeWithServerlogGW: mergeWithServerlog });
+  mesureUsecase.run(config).then(() => {
+    const output = new OutputCSVFile({ path: process.env.PWD + '/logs/status/date.3.30.csv' });
+    const outputStatus = new OutputStatus({ output, statusRepo: repo });
+    outputStatus.run();
+  });
 }

@@ -9,7 +9,7 @@ export function promiseReadFile(filepath) {
   });
 }
 
-export function promiseWriteFile(filepath, data) {
+export function promiseAppendFile(filepath, data) {
   return new Promise((res) => {
     fs.appendFile(filepath, data, (err, data) => {
       if(err) return res(err);
