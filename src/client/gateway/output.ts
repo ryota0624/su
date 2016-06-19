@@ -7,13 +7,14 @@ export interface OutputGW {
   write(status: ProcessStatus): Promise<any>
 }
 
-const header = '';
+const header = `pid,heapUsed,heapTotal,osFreeMem,osTotalMem,rss,la/1min,la/5min,la/15min,statusCode,time`;
+const headerArr = header.split(',');
 
 export class OutputCSVFile implements OutputGW {
   ouputpath: string;
   constructor({ path }) {
     this.ouputpath = path;
-    fs.writeFileSync(path, 'header'+ '\n');
+    fs.writeFileSync(path, header+'\n');
   }
   write(status: ProcessStatus) {
     return status.states.map(state => () => promiseAppendFile(this.ouputpath, stateToCSVStr(state) + '\n'))
@@ -23,5 +24,8 @@ export class OutputCSVFile implements OutputGW {
 
 function stateToCSVStr(state: ProcessState) {
   const params = state.getFlatState();
-  return `${params.pid},${params.heapUsed},${params.heapTotal},${params.osFreeMem},${params.osTotalMem},${params.rss},${params.statusCode},${params.time}`;
+  const str = headerArr.reduce((pre, cur) => {
+    return pre + ',' + params[cur];
+  }, '');
+  return str.slice(1, str.length);
 }

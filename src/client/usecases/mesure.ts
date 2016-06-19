@@ -3,7 +3,7 @@ import { MergeWithServerlog } from '../gateway/mergeWithServerlog';
 import { LoadTestGateway, SutyClientConfig } from '../gateway/loadTest';
 import { sleep } from '../../utils/sleep';
 import { processStausFactory } from '../model/processStatus';
-import ProcessStatusRepo from '../repository/processStatus';
+import { ProcessStatusRepo } from '../repository/processStatus';
 
 export interface MesureParams {
   loadTestGW: LoadTestGateway, 

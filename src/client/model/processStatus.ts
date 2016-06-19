@@ -13,8 +13,8 @@ export default class ProcessStatus {
 
       // .then(processStates => _.groupBy(processStates, 'pid'))
 
-export function processStausFactory(mergedlogs: Array<Array<any>>) {
-  const processStates = mergedlogs.map(log => processStateFactory(log[0], log[1]));
+export function processStausFactory(mergedlogs: Array<any>) {
+  const processStates = mergedlogs.map(log => processStateFactory(log.client, log.server));
   const pidGroupedState = _.groupBy(processStates, 'pid');
   const pids = Object.keys(pidGroupedState);
   return pids.map(pid => new ProcessStatus(Number(pid), pidGroupedState[pid]));

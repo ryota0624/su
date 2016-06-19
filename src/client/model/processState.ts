@@ -16,6 +16,6 @@ export default class ProcessState {
   }
 }
 
-export function processStateFactory(server, http) {
+export function processStateFactory(http, server) {
   return new ProcessState(server.pid, { http: new HttpState(http), server: new ServerState(server)})
 }

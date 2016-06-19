@@ -22,7 +22,7 @@ export class MergeWithServerlogRequest implements MergeWithServerlog {
     // return getServerlogsReachClientlogsLen(path, clientlogLen, this.readServerlog)
     return this.readServerlog.run({ path })
       .then(severlogs => _.zip<Serverlog | Clientlog>(severlogs, clientlogs))
-      // .then((res) => res.map(log => Object.assign({}, log[1], log[0])));
+      .then((res) => res.map(log => ({ client: log[1], server: log[0] })));
   }
 }
 
@@ -39,6 +39,8 @@ export class MergeWithServerlogFS implements MergeWithServerlog {
     // return getServerlogsReachClientlogsLen(path, clientlogLen, this.readServerlog)
     return this.readServerlog.run({ path })
       .then(severlogs => _.zip<Serverlog | Clientlog>(severlogs, clientlogs))
+      .then((res) => res.map(log => ({ client: log[1], server: log[0] })));
+
       // .then((res) => res.map(log => Object.assign({}, log[1], log[0])));
   }
 }

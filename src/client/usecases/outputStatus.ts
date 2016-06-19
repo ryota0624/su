@@ -1,4 +1,4 @@
-import ProcessStatusRepo from '../repository/processStatus';
+import { ProcessStatusRepo } from '../repository/processStatus';
 import { OutputGW } from '../gateway/output'
 export class OutputStatus {
   statusRepo: ProcessStatusRepo;
