@@ -2,6 +2,7 @@ import { ReadClientlog } from '../gateways/readClientlog';
 import { MergeWithServerlog } from '../gateways/mergeWithServerlog';
 import { LoadTestGateway, SutyClientConfig } from '../gateways/loadTest';
 import { sleep } from '../../utils/sleep';
+import { processStausFactory } from '../model/processStatus';
 export interface MesureParams {
   loadTestGW: LoadTestGateway, 
   readClientlogGW: ReadClientlog, 
@@ -22,6 +23,7 @@ export class Mesure {
     return this.loadTestGW.run(config)
       .then(resultpath => this.readClientlogGW.run())
       .then(clientlogs => this.mergeWithServerlogGW.run({ clientlogs }))
+      .then(mergedlogs => processStausFactory(mergedlogs))
       .then(mergedlogs => console.log(mergedlogs)).catch(err => console.log(err))
   }
 
