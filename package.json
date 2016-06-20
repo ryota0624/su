@@ -8,12 +8,20 @@
     "clean": "rm -f logs/client/*; rm -f logs/server/*; rm -f logs/status/*",
     "compile": "tsc -w --outDir js",
     "clean:src": "rm -f src/**/*.js",
+
     "client": "node js/client/entry client",
-    "client:multi": "node js/client/entry client:multi",
+    "client:sec": "node js/client/entry client ss",
+    "client:msec": "node js/client/entry client msec ss.SSS",
+    "client:min": "node js/client/entry client mm",
+    "client:h": "node js/client/entry client hh",
+
     "client:onlyAttack": "node js/client/entry client:onlyAttack",
     "mergelog": "node js/client/entry mergelog",
+
     "server": "node js/server/single/index",
     "server:cluster": "node js/server/cluster/index",
+
+    "client:quick": "node js/client/entry quick",
     "client:timeGrouped": "node js/client/entry client:timeGrouped",
     "test:client": "node js/client/entry test:client"
   },

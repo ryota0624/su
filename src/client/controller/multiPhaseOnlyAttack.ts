@@ -18,5 +18,5 @@ export default function multiMesureController(config: SutyClientConfig) {
     const mesureUsecase = new OnlyAttack({ loadTestGW: artillery });
     return () => mesureUsecase.run(newConfig);
   });
-  usecases.reduce((pre, cur) => pre.then(cur), Promise.resolve(0))
+  usecases.reduce((pre: any, cur) => pre.then(cur), Promise.resolve(0))
 }

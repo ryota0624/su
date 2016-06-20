@@ -12,6 +12,7 @@ export class OutputStatus {
     this.externalApp = params.externalApp;
   }
   run({ timeFormat }: { timeFormat: string }) {
+    console.log(timeFormat)
     return this.statusRepo.getAll()
       .map(status => status.status.formatTime(timeFormat))
       .map(status => () => this.output.write(status))

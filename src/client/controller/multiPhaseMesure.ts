@@ -29,8 +29,17 @@ export default function multiMesureController(config: SutyClientConfig, repo) {
       const output = new OutputCSVFile({ path: distpath.csv });
       const defaultApp = new DefaultApp(distpath.csv);
       const outputStatus = new OutputStatus({ output, statusRepo: repo, externalApp: defaultApp });
-      return outputStatus.run({ timeFormat: config.timeformat });
+      const argvConfig = parseArgv(config);
+      console.log(argvConfig)
+      return outputStatus.run({ timeFormat: argvConfig.timeformat });
     });
   });
   usecases.reduce((pre, cur) => pre.then(cur), Promise.resolve(0))
+}
+
+function parseArgv(config) {
+  const argv = {
+    timefomat: process.argv[3]
+  };
+  return Object.assign({}, config, argv)
 }

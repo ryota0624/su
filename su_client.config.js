@@ -1,4 +1,5 @@
 module.exports = {
+  //target: 'http://54.199.255.117',//標的となるurl
   target: 'http://localhost:3333',//標的となるurl
   duration: 3, //テストする期間 second
   rate: 30, //リクエストの送信レート
@@ -10,11 +11,11 @@ module.exports = {
       {"duration": 3, "arrivalRate": 30 , "name": "hoge"},
       {"duration": 6, "arrivalRate": 50, "name": "High load phase"}
     ],
-  // scenarios: [
-  //   {
-  //     'flow': [{'get': {url: '/ad?spotId=4'}}]
-  //   }
-  // ],
+  scenarios: [
+    {
+      'flow': [{'get': {url: '/ad?spotId=4'}}]
+    }
+  ],
   // variables: {
     
   // },

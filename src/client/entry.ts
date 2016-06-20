@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import mesureContoller from './controller/mesure';
+import mesureQuickContoller from './controller/mesureQuick';
 import mesureTestContoller from './controller/mesureTest';
 import multiPhaseMesureContoller from './controller/multiPhaseMesure';
 import timeGroupedContoller from './controller/timeGrouped';
@@ -11,11 +11,11 @@ const clientConfig = require(`${process.env.PWD}/su_client.config.js`);
 const processStatusRepo = new ProcessStatusRepoFS;
 
 switch (process.argv[2]) {
-  case 'client': {
-    mesureContoller(clientConfig, processStatusRepo);
+  case 'quick': {
+    mesureQuickContoller(clientConfig, processStatusRepo);
     break;
   }
-  case 'client:multi': {
+  case 'client': {
     multiPhaseMesureContoller(clientConfig, processStatusRepo);
     break;
   }
