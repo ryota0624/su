@@ -1,11 +1,13 @@
-const getLinuxCPU = require('./src/linuxProcess');
+import getLinuxCPU from './src/linuxProcess';
 
-function getCPU(tempo, processName, processDistPath, cpuDistPath) {
+function getCPU(tempo/** sec */, processName, processDistPath, cpuDistPath) {
   const exec = {
-    darwin: getDarwinCPU,
+    darwin: (tempo, processName, processDistPath, cpuDistPath) => {
+      console.log(tempo, processName, processDistPath, cpuDistPath);
+    },
     linux: getLinuxCPU,
   };
   const platform = process.platform;
   return exec[platform](tempo, processName, processDistPath, cpuDistPath);
 }
-module.exports = getCPU;
+export default getCPU;

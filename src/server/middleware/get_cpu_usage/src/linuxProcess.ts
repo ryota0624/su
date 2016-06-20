@@ -1,6 +1,6 @@
 'use strict';
-const fs = require('./promiseFs');
-const shspawn = require('./shspawn');
+import * as fs from './promiseFs';
+import shspawn from './shspawn';
 function parseCpuUsageLinux(str) {
  const cpuArr = str.split(/\s+|\%|,/).filter(i => Number(i) || i === '0.0' );
  const user = cpuArr[0];
@@ -31,10 +31,10 @@ function parseProcessUsageLinux(str) {
 function getProcessUsageLinux(processName, time, processDistPath, cpuDistPath) {
   const command = `top -n ${time} -b | grep -E "${processName}|Cpu"`;
   return shspawn(command)
-  .then(result => {
+  .then((result: string) => {
     const resArr = result.split('\n');
-    const processLine = resArr.filter(line => line.match(processName)).map(parseProcessUsageLinux);
-    const cpuLine = resArr.filter(line => line.match('Cpu')).map(parseCpuUsageLinux);
+    const processLine = resArr.filter((line: any) => line.match(processName)).map(parseProcessUsageLinux);
+    const cpuLine = resArr.filter((line:any) => line.match('Cpu')).map(parseCpuUsageLinux);
     return { process: processLine, cpu: cpuLine };
   })
   .then(usage => {
@@ -69,4 +69,4 @@ function temporalGetUsageLinux(tempo, processName, processDistPath, cpuDistPath)
   .catch(err => console.log(err))
 }
 // temporalGetUsage(5, 'node', './process.txt', './cpu.txt');
-module.exports = temporalGetUsageLinux;
+export default temporalGetUsageLinux;

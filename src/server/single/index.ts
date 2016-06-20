@@ -1,5 +1,6 @@
 import * as express from 'express';
 import loggerCreator from '../middleware/express-sutylogger/index';
+import getCPU from '../middleware/get_cpu_usage/index';
 
 const config = require(process.env.PWD +'/su_server.config.js');
 const testModule = require('../loadModule')(config.testModule);
@@ -10,6 +11,7 @@ var app = express();
 console.log('host:', config.host);
 console.log('port:', config.port);
 console.log('pid: ', process.pid);
+getCPU(5, "node", `${process.env.PWD}/logs/server/process.csv`, `${process.env.PWD}/logs/server/cpu.csv`);
 const server = (cb) => {
   app.use(logger);
   app.use(testModule);

@@ -1,5 +1,5 @@
 'use strict'
-const spawn = require('child_process').spawn;
+import { spawn } from 'child_process';
 function shspawn(command) {
   let buf="";
   return new Promise((res, rej) => {
@@ -16,4 +16,4 @@ function shspawn(command) {
   });
 }
 
-module.exports = shspawn;
+export default shspawn;
