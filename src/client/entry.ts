@@ -3,7 +3,7 @@ import mesureContoller from './controller/mesure';
 import mesureTestContoller from './controller/mesureTest';
 import multiPhaseMesureContoller from './controller/multiPhaseMesure';
 import timeGroupedContoller from './controller/timeGrouped';
-import onlyAttackController from './controller/multiPhaseonlyAttack';
+import onlyAttackController from './controller/multiPhaseOnlyAttack';
 import createMergedLogController from './controller/createMergedLog';
 
 import { ProcessStatusRepoFS } from './repository/processStatus';
