@@ -6,9 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -f logs/client/*; rm -f logs/server/*",
-    "compile": "tsc --outDir js",
+    "compile": "tsc -w --outDir js",
     "clean:src": "rm -f src/**/*.js",
     "client": "node js/client/entry client",
+    "server": "node js/server/single/index",
+    "server:cluster": "node js/server/cluster/index",
     "test:client": "node js/client/entry test:client"
   },
   "keywords": [],
@@ -17,6 +19,7 @@
   "dependencies": {
     "artillery": "^1.5.0-5",
     "artillery-core": "^1.8.2",
+    "express": "^4.14.0",
     "lodash": "^4.13.1"
   },
   "devDependencies": {

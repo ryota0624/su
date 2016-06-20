@@ -4,7 +4,7 @@ import { messageType } from './common';
 import { logHeader } from '../common/logger';
 let startTime;
 
-const parentLogger = (filename: string) => (workers: Array<cluster.Worker>) => {
+const parentLogger = (filename: string) => (workers: any) => {
   let logStream = fs.createWriteStream(filename);
   logStream.write(logHeader());
   const cluster = require('cluster');
@@ -16,7 +16,7 @@ const parentLogger = (filename: string) => (workers: Array<cluster.Worker>) => {
           if (loggerActive) {
             const time = new Date().getTime() - startTime;
             const log = data.log.replace('notFilled', time);
-            logStream.write(data.log);
+            logStream.write(log);
           }
           break;
         }

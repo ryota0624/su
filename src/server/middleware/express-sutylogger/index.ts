@@ -1,6 +1,6 @@
 import logger from './singlecore/singlecore';
 import { clusterLogger } from './cluster/common';
-module.exports = {
-  logger,
+export default {
+  singlecore: logger,
   cluster: clusterLogger
 }
