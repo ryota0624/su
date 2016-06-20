@@ -6,8 +6,11 @@ import { ArtilleryGateway, SutyClientConfig } from '../gateway/loadTest';
 import { ReadClientlogFS } from '../gateway/readClientlog';
 import { ReadServerlogRequest } from '../gateway/readServerlog';
 import { MergeWithServerlogRequest, MergeWithServerlogFS } from '../gateway/mergeWithServerlog';
+import { DefaultApp } from '../gateway/externalApp';
 
 import{ sleep } from '../../utils/sleep';
+
+import { configCreator, distpathCreator } from '../creator/index'
 
 export default function multiMesureController(config: SutyClientConfig, repo) {
   const usecases = config.phases.map(phase => {
@@ -24,20 +27,10 @@ export default function multiMesureController(config: SutyClientConfig, repo) {
 
     return () => mesureUsecase.run(newConfig).then(() => {
       const output = new OutputCSVFile({ path: distpath.csv });
-      const outputStatus = new OutputStatus({ output, statusRepo: repo });
+      const defaultApp = new DefaultApp(distpath.csv);
+      const outputStatus = new OutputStatus({ output, statusRepo: repo, externalApp: defaultApp });
       return outputStatus.run({ timeFormat: config.timeformat });
     });
   });
   usecases.reduce((pre, cur) => pre.then(cur), Promise.resolve(0))
-}
-
-function configCreator(phase, config) {
-  return Object.assign({}, config, { rate: phase.arrivalRate, duration: phase.duration, logname: phase.name });
-}
-
-function distpathCreator(config) {
-  return {
-    loadTest: `${process.env.PWD}/logs/client/${config.logname}.${config.duration}.${config.rate}`,
-    csv: `${process.env.PWD}/logs/status/${config.logname}.${config.duration}.${config.rate}.csv`
-  }
 }

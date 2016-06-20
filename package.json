@@ -10,6 +10,8 @@
     "clean:src": "rm -f src/**/*.js",
     "client": "node js/client/entry client",
     "client:multi": "node js/client/entry client:multi",
+    "client:onlyAttack": "node js/client/entry client:onlyAttack",
+    "mergelog": "node js/client/entry mergelog",
     "server": "node js/server/single/index",
     "server:cluster": "node js/server/cluster/index",
     "client:timeGrouped": "node js/client/entry client:timeGrouped",

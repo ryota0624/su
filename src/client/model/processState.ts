@@ -1,6 +1,6 @@
-import HttpState from './httpState';
+import HttpState, { createEmptyHttpState } from './httpState';
 import * as moment from 'moment';
-import ServerState from './serverState';
+import ServerState, { createEmptyServerState } from './serverState';
 export default class ProcessState {
   pid: number;
   http: HttpState;
@@ -8,8 +8,8 @@ export default class ProcessState {
   time: number;
   constructor(pid, state: { http: HttpState, server: ServerState}) {
     this.pid = pid;
-    this.http = state.http;
-    this.server = state.server;
+    this.http = state.http || createEmptyHttpState();
+    this.server = state.server || createEmptyServerState();
     this.time = state.server.relativeTime;
   }
   getFlatState() {
@@ -25,5 +25,6 @@ export default class ProcessState {
 }
 
 export function processStateFactory(http, server) {
-  return new ProcessState(server.pid, { http: new HttpState(http), server: new ServerState(server)})
+  const pid = server ? server.pid : "empty";
+  return new ProcessState(pid, { http: new HttpState(http), server: new ServerState(server)});
 }

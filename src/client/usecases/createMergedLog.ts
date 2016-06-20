@@ -1,39 +1,33 @@
 import { ReadClientlog } from '../gateway/readClientlog';
 import { MergeWithServerlog } from '../gateway/mergeWithServerlog';
-import { LoadTestGateway, SutyClientConfig } from '../gateway/loadTest';
 
 import { processStausFactory } from '../model/processStatus';
 import { ProcessStatusRepo } from '../repository/processStatus';
 
-export interface MesureParams {
-  loadTestGW: LoadTestGateway, 
+export interface createMergedLogParams {
   readClientlogGW: ReadClientlog, 
   mergeWithServerlogGW: MergeWithServerlog,
-  processStatusRepo: ProcessStatusRepo
+  processStatusRepo: ProcessStatusRepo,
+  config: { logname: string }
 }
 
-export class Mesure {
-  loadTestGW: LoadTestGateway;
+export class CreateMergedLog {
   readClientlogGW: ReadClientlog;
   mergeWithServerlogGW: MergeWithServerlog;
   processStatusRepo: ProcessStatusRepo;
-  
-  constructor(params: MesureParams) {
-    this.loadTestGW = params.loadTestGW;
+  config: { logname: string };
+  constructor(params: createMergedLogParams) {
     this.readClientlogGW = params.readClientlogGW;
     this.mergeWithServerlogGW = params.mergeWithServerlogGW;
     this.processStatusRepo = params.processStatusRepo;
+    this.config = params.config;
   }
-  run(config: SutyClientConfig) {
-    return this.loadTestGW.run(config)
-      .then(resultpath => this.readClientlogGW.run())
+  run() {
+    return this.readClientlogGW.run()
       .then(clientlogs => this.mergeWithServerlogGW.run({ clientlogs }))
       .then(mergedlogs => processStausFactory(mergedlogs))
-      .then(processStatuses => processStatuses.forEach(processStatus => {
-        this.processStatusRepo.add(config.logname ,processStatus);
+      .then(processStatuses => processStatuses.forEach((processStatus, key) => {
+        this.processStatusRepo.add(this.config.logname + key ,processStatus);
       })).then(() => console.log(this.processStatusRepo)).catch(err => console.log(err))
   }
 }
-
-// const m = new Mesure({ loadTestGW: null, readClientlogGW:null, readServerlogGW: null });
-// console.log(m);

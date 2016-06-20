@@ -25,5 +25,5 @@ export function processStausFactory(mergedlogs: Array<any>) {
   return pids.map(pid => new ProcessStatus(Number(pid), pidGroupedState[pid]));
 }
 
-export const header = `pid,heapUsed,heapTotal,osFreeMem,osTotalMem,rss,la/1min,la/5min,la/15min,statusCode,time,relativeTime`;
+export const header = `pid,heapUsed,heapTotal,osFreeMem,osTotalMem,rss,la/1min,la/5min,la/15min,statusCode,time,relativeTime,responseTime`;
 export const headerArr = header.split(',');

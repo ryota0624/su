@@ -1,7 +1,7 @@
 import ProcessStatus, {processStausFactory} from '../model/processStatus';
 import ProcessState, {processStateFactory} from '../model/processState';
 
-import { promiseReadFile } from '../../utils/promiseFS';
+import { promiseReadFile } from '../../utils/promiseFs';
 import { csvToArray } from '../../utils/csv'
 export interface ProcessStatusRepo {
   data: Map<string, ProcessStatus>;

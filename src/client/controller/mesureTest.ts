@@ -6,6 +6,7 @@ import { MockLoadTest } from '../gateway/loadTest';
 import { ReadClientlogFS } from '../gateway/readClientlog';
 import { ReadServerlogRequest } from '../gateway/readServerlog';
 import { MergeWithServerlogRequest, MergeWithServerlogFS } from '../gateway/mergeWithServerlog';
+import { DefaultApp } from '../gateway/externalApp';
 
 export default function mesureController(config, repo) {
   const artillery = new MockLoadTest({ path: process.env.PWD + '/logs/client/date.3.30.json'});
@@ -14,7 +15,8 @@ export default function mesureController(config, repo) {
   const mesureUsecase = new Mesure({ processStatusRepo: repo ,loadTestGW: artillery, readClientlogGW: readClientlog, mergeWithServerlogGW: mergeWithServerlog });
   mesureUsecase.run(config).then(() => {
     const output = new OutputCSVFile({ path: process.env.PWD + '/logs/status/date.3.30.csv' });
-    const outputStatus = new OutputStatus({ output, statusRepo: repo });
+    const defaultApp = new DefaultApp(process.env.PWD + '/logs/status/date.3.30.csv');
+    const outputStatus = new OutputStatus({ output, statusRepo: repo, externalApp: defaultApp });
     outputStatus.run({ timeFormat: config.timeformat});
   });
 }
