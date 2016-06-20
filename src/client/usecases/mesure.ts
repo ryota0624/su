@@ -30,20 +30,8 @@ export class Mesure {
       .then(clientlogs => this.mergeWithServerlogGW.run({ clientlogs }))
       .then(mergedlogs => processStausFactory(mergedlogs))
       .then(processStatuses => processStatuses.forEach(processStatus => {
-        this.processStatusRepo.add(processStatus);
+        this.processStatusRepo.add(config.logname ,processStatus);
       })).then(() => console.log(this.processStatusRepo)).catch(err => console.log(err))
-  }
-
-  createTests(config: SutyClientConfig) {
-     return config.phases.map(phase => {
-       if (phase.pause) return () => sleep(phase.pause); //後でsleepに;
-      config.duration = phase.duration;
-      config.rate = phase.arrivalRate;
-      config.logname = phase.name;
-      return () => this.loadTestGW.run(config)
-      .then((resultpath) => this.readClientlogGW.run())
-      .then(res => console.log(res))
-    });
   }
 }
 

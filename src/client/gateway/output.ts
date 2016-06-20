@@ -1,4 +1,4 @@
-import ProcessStatus from '../model/processStatus';
+import ProcessStatus, { header, headerArr } from '../model/processStatus';
 import ProcessState from '../model/processState';
 
 import * as fs from 'fs';
@@ -7,8 +7,7 @@ export interface OutputGW {
   write(status: ProcessStatus): Promise<any>
 }
 
-const header = `pid,heapUsed,heapTotal,osFreeMem,osTotalMem,rss,la/1min,la/5min,la/15min,statusCode,time`;
-const headerArr = header.split(',');
+
 
 export class OutputCSVFile implements OutputGW {
   ouputpath: string;

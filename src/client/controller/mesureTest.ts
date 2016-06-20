@@ -15,6 +15,6 @@ export default function mesureController(config, repo) {
   mesureUsecase.run(config).then(() => {
     const output = new OutputCSVFile({ path: process.env.PWD + '/logs/status/date.3.30.csv' });
     const outputStatus = new OutputStatus({ output, statusRepo: repo });
-    outputStatus.run();
+    outputStatus.run({ timeFormat: config.timeformat});
   });
 }

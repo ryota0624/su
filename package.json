@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rm -f logs/client/*; rm -f logs/server/*",
+    "clean": "rm -f logs/client/*; rm -f logs/server/*; rm -f logs/status/*",
     "compile": "tsc -w --outDir js",
     "clean:src": "rm -f src/**/*.js",
     "client": "node js/client/entry client",
+    "client:multi": "node js/client/entry client:multi",
     "server": "node js/server/single/index",
     "server:cluster": "node js/server/cluster/index",
+    "client:timeGrouped": "node js/client/entry client:timeGrouped",
     "test:client": "node js/client/entry test:client"
   },
   "keywords": [],
@@ -20,7 +22,8 @@
     "artillery": "^1.5.0-5",
     "artillery-core": "^1.8.2",
     "express": "^4.14.0",
-    "lodash": "^4.13.1"
+    "lodash": "^4.13.1",
+    "moment": "^2.13.0"
   },
   "devDependencies": {
     "typescript": "^1.8.10",

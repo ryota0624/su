@@ -7,8 +7,9 @@ export class OutputStatus {
     this.output = params.output;
     this.statusRepo = params.statusRepo;
   }
-  run() {
+  run({ timeFormat }: { timeFormat: string }) {
     return this.statusRepo.getAll()
+      .map(status => status.status.formatTime(timeFormat))
       .map(status => () => this.output.write(status))
       .reduce((pre, cur) => pre.then(cur), Promise.resolve(0));
   }

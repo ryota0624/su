@@ -13,7 +13,7 @@ export function logging(args) {
 }
 
 export function logHeader() {
-  return 'pid,time,rss,heapUsed,heapTotal,osFreeMem,osTotalMem,la/1min,la/5min,la/15min\n';
+  return 'pid,relativeTime,rss,heapUsed,heapTotal,osFreeMem,osTotalMem,la/1min,la/5min,la/15min\n';
 }
 
 export function temporalLog() {

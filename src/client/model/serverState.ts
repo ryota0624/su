@@ -1,6 +1,6 @@
 export default class ServerState {
   pid: number;
-  time: number;
+  relativeTime: number;
   rss: number;
   heapUsed: number;
   heapTotal: number;
@@ -11,7 +11,7 @@ export default class ServerState {
   'la/15min': number;
   constructor(args) {
     this.pid = args.pid;
-    this.time = args.time;
+    this.relativeTime = args.relativeTime;
     this.rss = args.rss;
     this.heapUsed = args.heapUsed;
     this.heapTotal = args.heapTotal;

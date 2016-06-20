@@ -1,13 +1,13 @@
 module.exports = {
-  target: 'http://localhost:3000',//標的となるurl
+  target: 'http://localhost:3333',//標的となるurl
   duration: 3, //テストする期間 second
   rate: 30, //リクエストの送信レート
-  timeformat: 'ss', //サンプルを増やす milli secでとりたい時
+  timeformat: 'ss.S', //サンプルを増やす milli secでとりたい時
   timeout: 30,
   phases: [
       {"duration": 3, "arrivalRate": 5, "name": "Warm-up"},
       {"pause": 10},
-      {"duration": 3, "arrivalCount": 30 },
+      {"duration": 3, "arrivalRate": 30 , "name": "hoge"},
       {"duration": 6, "arrivalRate": 50, "name": "High load phase"}
     ],
   // scenarios: [
