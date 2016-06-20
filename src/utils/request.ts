@@ -12,7 +12,8 @@ export function getPromise(url) {
     }).on('error', (e) => {
       rej(e);
       console.log('request error', url, e);
-      process.exit();
+      process.stderr.write(e.toString());
+      //process.exit();
     });
   });
 }

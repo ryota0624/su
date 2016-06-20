@@ -32,7 +32,7 @@ function parseArgv(config) {
     duration: process.argv[4],
     rate: process.argv[5],
     logname: process.argv[3],
-    scenarios: []
+    // scenarios: []
   }
   return Object.assign({}, config, argvConfig);
 }
