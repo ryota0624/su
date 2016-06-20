@@ -1,4 +1,3 @@
-
 /// <reference path="globals/es2015/index.d.ts" />
 /// <reference path="globals/express-serve-static-core/index.d.ts" />
 /// <reference path="globals/express/index.d.ts" />

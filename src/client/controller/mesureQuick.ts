@@ -13,6 +13,7 @@ import { distpathCreator } from '../creator/index';
 export default function mesureController(config, repo) {
   const argvConfig = parseArgv(config);
   const distpath = distpathCreator(argvConfig);
+  console.log(argvConfig)
   const artillery = new ArtilleryGateway({ path: distpath.loadTest });
   const readClientlog = new ReadClientlogFS({ path: distpath.loadTest + '.json'});
   const mergeWithServerlog = new MergeWithServerlogRequest({ path: argvConfig.target });
@@ -31,7 +32,7 @@ function parseArgv(config) {
     duration: process.argv[4],
     rate: process.argv[5],
     logname: process.argv[3],
-    scenarious: []
+    scenarios: []
   }
   return Object.assign({}, config, argvConfig);
 }
