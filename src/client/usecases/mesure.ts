@@ -31,7 +31,7 @@ export class Mesure {
       .then(mergedlogs => processStausFactory(mergedlogs))
       .then(processStatuses => processStatuses.forEach(processStatus => {
         this.processStatusRepo.add(config.logname ,processStatus);
-      })).then(() => console.log(this.processStatusRepo)).catch(err => console.log(err))
+      })).then(() => console.log(this.processStatusRepo))
   }
 }
 

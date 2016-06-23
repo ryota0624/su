@@ -5,7 +5,7 @@ import { ArtilleryGateway, SutyClientConfig } from '../gateway/loadTest';
 
 import{ sleep } from '../../utils/sleep';
 
-import { configCreator, distpathCreator } from '../creator/index'
+import { configCreator, distpathCreator } from './creator/index'
 
 
 export default function multiMesureController(config: SutyClientConfig) {

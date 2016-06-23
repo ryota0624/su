@@ -6,25 +6,23 @@ import timeGroupedContoller from './controller/timeGrouped';
 import onlyAttackController from './controller/multiPhaseOnlyAttack';
 import createMergedLogController from './controller/createMergedLog';
 
-import { ProcessStatusRepoFS } from './repository/processStatus';
 const clientConfig = require(`${process.env.PWD}/su_client.config.js`);
-const processStatusRepo = new ProcessStatusRepoFS;
 
 switch (process.argv[2]) {
   case 'quick': {
-    mesureQuickContoller(clientConfig, processStatusRepo);
+    mesureQuickContoller(clientConfig);
     break;
   }
   case 'client': {
-    multiPhaseMesureContoller(clientConfig, processStatusRepo);
+    multiPhaseMesureContoller(clientConfig);
     break;
   }
   case 'mergelog': {
-    createMergedLogController(clientConfig, processStatusRepo);
+    createMergedLogController(clientConfig);
     break;
   }
   case 'client:timeGrouped': {
-    timeGroupedContoller([`${process.env.PWD}/logs/status/hoge.3.30.csv`,`${process.env.PWD}/logs/status/High load phase.6.50.csv`], processStatusRepo);
+    timeGroupedContoller([`${process.env.PWD}/logs/status/hoge.3.30.csv`,`${process.env.PWD}/logs/status/High load phase.6.50.csv`]);
     break;
   }
   case 'client:onlyAttack': {
@@ -32,7 +30,7 @@ switch (process.argv[2]) {
     break;
   }
   case 'test:client': {
-    mesureTestContoller(clientConfig, processStatusRepo);
+    mesureTestContoller(clientConfig);
     break;
   }
 }

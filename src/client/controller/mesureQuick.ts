@@ -8,20 +8,24 @@ import { OutputCSVFile } from '../gateway/output';
 import { OutputStatus } from '../usecases/outputStatus';
 
 
-import { distpathCreator } from '../creator/index';
+import { ProcessStatusRepoFS } from '../repository/processStatus';
 
-export default function mesureController(config, repo) {
+const processStatusRepo = new ProcessStatusRepoFS;
+
+import { distpathCreator } from './creator/index';
+
+export default function mesureController(config) {
   const argvConfig = parseArgv(config);
   const distpath = distpathCreator(argvConfig);
   console.log(argvConfig)
   const artillery = new ArtilleryGateway({ path: distpath.loadTest });
   const readClientlog = new ReadClientlogFS({ path: distpath.loadTest + '.json'});
   const mergeWithServerlog = new MergeWithServerlogRequest({ path: argvConfig.target });
-  const mesureUsecase = new Mesure({ processStatusRepo: repo ,loadTestGW: artillery, readClientlogGW: readClientlog, mergeWithServerlogGW: mergeWithServerlog });
+  const mesureUsecase = new Mesure({ processStatusRepo ,loadTestGW: artillery, readClientlogGW: readClientlog, mergeWithServerlogGW: mergeWithServerlog });
   mesureUsecase.run(argvConfig).then(() => {
     const output = new OutputCSVFile({ path: distpath.csv });
     const defaultApp = new DefaultApp(distpath.csv);
-    const outputStatus = new OutputStatus({ output, statusRepo: repo, externalApp: defaultApp });
+    const outputStatus = new OutputStatus({ output, statusRepo: processStatusRepo, externalApp: defaultApp });
     return outputStatus.run({ timeFormat: argvConfig.timeformat });
   });
 }
