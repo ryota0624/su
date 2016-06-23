@@ -1,8 +1,7 @@
 import { Clientlog } from './readClientlog';
 import { ReadServerlogRequest, Serverlog, ReadServerlog, ReadServerlogFS } from './readServerlog';
 import * as _ from 'lodash';
-interface MergedLog extends Serverlog, Clientlog {
-}
+
 export interface MergeWithServerlog {
   readServerlog: ReadServerlog;
   path: string;

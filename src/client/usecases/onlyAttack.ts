@@ -1,4 +1,4 @@
-import { LoadTestGateway, SutyClientConfig } from '../gateway/loadTest';
+import { LoadTestGateway, SutyClientConfig } from './gatewayInterfaces/loadTest';
 
 export class OnlyAttack {
   loadTestGW: LoadTestGateway;

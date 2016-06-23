@@ -10,9 +10,8 @@ export function getPromise(url) {
       response.on('end', () => resolve(data));
       response.resume();
     }).on('error', (e) => {
-      rej(e);
-      console.log('request error', url, e);
-      process.stderr.write(e.toString());
+      // rej(e);
+      throw new Error('request error' +  url + '\n' + e.toString());
       //process.exit();
     });
   });

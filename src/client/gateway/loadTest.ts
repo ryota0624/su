@@ -1,24 +1,8 @@
 import * as fs from 'fs';
 import { spawnSync } from 'child_process'
 import { getPromise } from '../../utils/request';
+import { LoadTestGateway, SutyJob } from '../usecases/interface/loadTest';
 
-export interface SutyClientConfig {
-  target: string;
-  duration: number;
-  rate: number;
-  timeformat: string;
-  timeout: number;
-  scenarios: any;
-  logname: string;
-  outputdir: string;
-  spreadSheetSoftwarePath: string;
-  phases: Array<{ duration: number, arrivalRate: number, name: string, pause?: number }>
-}
-
-export interface LoadTestGateway {
-  resultpath: string;
-  run(config: SutyClientConfig): Promise<any>;
-}
 
 export interface ArtilleryConfig {
   config: {
@@ -28,12 +12,13 @@ export interface ArtilleryConfig {
   outputname: string;
   scenarios: Array<{ flow: Array<{ get: { url: string} }> }>
 }
+
 export class MockLoadTest implements LoadTestGateway {
   resultpath: string;
   constructor({ path }: { path: string }) {
     this.resultpath = path;
   }
-  run(config: SutyClientConfig) {
+  run(config: SutyJob) {
     return Promise.resolve(this.resultpath);
   }
 }
@@ -42,7 +27,7 @@ export class ArtilleryGateway implements LoadTestGateway{
   constructor({ path }: { path: string }) {
     this.resultpath = path;
   }
-  run(config: SutyClientConfig) {
+  run(config: SutyJob) {
     this.init(config);
     return getPromise(`${config.target}/suty/start`)
     .then(() => this.test(config))
@@ -51,7 +36,7 @@ export class ArtilleryGateway implements LoadTestGateway{
       return this.resultpath
     });
   }
-  private test(config: SutyClientConfig) {
+  private test(config: SutyJob) {
     return new Promise((res, rej) => {
       const spawn = require('child_process').spawn;
       const artilleryPath = `${process.env.PWD}/node_modules/artillery/bin/artillery`;
@@ -64,7 +49,7 @@ export class ArtilleryGateway implements LoadTestGateway{
       });
     });
   }
-  private init(config: SutyClientConfig) {
+  private init(config: SutyJob) {
     let artyConfig: ArtilleryConfig = {
       config: {
         target: null,

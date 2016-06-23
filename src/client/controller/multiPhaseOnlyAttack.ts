@@ -1,11 +1,12 @@
 import { OnlyAttack } from '../usecases/onlyAttack';
 
 import { OutputCSVFile } from '../gateway/output';
-import { ArtilleryGateway, SutyClientConfig } from '../gateway/loadTest';
+import { ArtilleryGateway } from '../gateway/loadTest';
 
+import { SutyClientConfig } from '../usecases/gatewayInterfaces/loadTest'
 import{ sleep } from '../../utils/sleep';
 
-import { configCreator, distpathCreator } from '../creator/index'
+import { configCreator, distpathCreator } from './creator/index'
 
 
 export default function multiMesureController(config: SutyClientConfig) {

@@ -1,10 +1,5 @@
 import { exec } from 'child_process';
-
-export interface ExternalApp {
-  filename: string;
-  run()
-}
-
+import { ExternalApp } from '../usecases/gatewayInterfaces/externalApp';
 const openFile = (openApp) => (filename) => exec(`open -a '${openApp}' ${filename}`, (err, data) => {
   if(err) {
     console.log(err);

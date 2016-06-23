@@ -1,5 +1,5 @@
 import { ProcessStatusRepo } from '../repository/processStatus';
-import { headerArr } from '../model/processStatus';
+import  ProcessStatus, { headerArr } from '../model/processStatus';
 import * as _ from 'lodash';
 export class GroupedTime {
   statusRepo: ProcessStatusRepo;
@@ -9,13 +9,14 @@ export class GroupedTime {
   run() {
     return this.statusRepo.getAll().map(statuses => {
       const grouped = statuses.status.getTimeGrouped();
-      const times = Object.keys(grouped);
-      const props = times.map(time => {
-        return { time, value: headerArr.map(prop => {
-          return { prop, value: _.filter(grouped[time], props) }
-        })}
-      });
-      console.log(props)
-    });
+      const keys = Object.keys(grouped)
+      return keys.map(key => ({ time: key, value: averageFlatState(grouped[key].map(group => group.getFlatState())) }))
+    }).forEach(i => console.log(i));
   }
+}
+
+function averageFlatState(arr: Array<any>) {
+  console.log(_)
+  
+  return arr;
 }

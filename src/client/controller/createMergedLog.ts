@@ -14,7 +14,7 @@ export default function mesureController(config, repo) {
   mesureUsecase.run().then(() => {
     const output = new OutputCSVFile({ path: process.env.PWD + '/logs/status/merged.3.30.csv' });
     const defaultApp = new DefaultApp(process.env.PWD + '/logs/status/merged.3.30.csv');
-    const outputStatus = new OutputStatus({ output, statusRepo: repo, externalApp:  defaultApp});
+    const outputStatus = new OutputStatus({ output, statusRepo: repo });
     outputStatus.run({ timeFormat: config.timeformat});
   });
 }
