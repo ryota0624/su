@@ -43,8 +43,9 @@ export default class ShowProcessStatus {
         .then(requestState => this.addRequestStatus(requestState))
         .then(() => this.getServerStatus.run({ path: config.target }))
         .then(serverStatus => this.addServerStatus(serverStatus))
-        .then(() => processStateFactory(this.requestStatus, this.serverStatus))
-        .then((mergeLogs) => processStateFactory(merge))
+        .then(() => mergeLogs(this.serverStatus, this.requestStatus))
+        .then((mergeLogs) => processStausFactory(mergeLogs))
+        .then(status => status)
     })
   }
 
