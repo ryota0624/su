@@ -6,7 +6,7 @@ module.exports = {
   timeout: 30,
   phases: [
       {"duration": 3, "arrivalRate": 5, "name": "Warm-up"},
-      {"pause": 10},
+      // {"pause": 10},
       {"duration": 3, "arrivalRate": 30 , "name": "hoge"},
       {"duration": 6, "arrivalRate": 50, "name": "High load phase"}
     ],

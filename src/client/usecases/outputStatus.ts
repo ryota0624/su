@@ -1,6 +1,6 @@
 import { ProcessStatusRepo } from '../repository/processStatus';
-import { OutputGW } from '../gateway/output';
-import { ExternalApp } from '../gateway/externalApp'
+import { OutputGW } from './interface/output';
+import { ExternalApp } from './interface/externalApp'
 
 export class OutputStatus {
   statusRepo: ProcessStatusRepo;

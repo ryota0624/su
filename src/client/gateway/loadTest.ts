@@ -2,23 +2,7 @@ import * as fs from 'fs';
 import { spawnSync } from 'child_process'
 import { getPromise } from '../../utils/request';
 
-export interface SutyClientConfig {
-  target: string;
-  duration: number;
-  rate: number;
-  timeformat: string;
-  timeout: number;
-  scenarios: any;
-  logname: string;
-  outputdir: string;
-  spreadSheetSoftwarePath: string;
-  phases: Array<{ duration: number, arrivalRate: number, name: string, pause?: number }>
-}
-
-export interface LoadTestGateway {
-  resultpath: string;
-  run(config: SutyClientConfig): Promise<any>;
-}
+import { LoadTestGateway, SutyClientConfig } from '../usecases/interface/loadTest';
 
 export interface ArtilleryConfig {
   config: {

@@ -3,11 +3,7 @@ import ProcessState from '../model/processState';
 
 import * as fs from 'fs';
 import { promiseAppendFile } from '../../utils/promiseFs';
-export interface OutputGW {
-  write(status: ProcessStatus): Promise<any>
-}
-
-
+import { OutputGW } from '../usecases/interface/output';
 
 export class OutputCSVFile implements OutputGW {
   ouputpath: string;

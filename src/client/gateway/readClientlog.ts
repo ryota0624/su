@@ -1,9 +1,5 @@
 import * as fs from '../../utils/promiseFs';
-export interface Clientlog {
-  time: number;
-  responseTime: number;
-  statusCode: number;
-}
+import { Clientlog } from '../usecases/interface/readClientlog';
 
 function parseArtilleryLogs(latencies): Array<Clientlog> {
   return latencies

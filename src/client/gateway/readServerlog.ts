@@ -1,22 +1,7 @@
 import { csvToArray } from '../../utils/csv';
 import { getPromise } from '../../utils/request';
 import { promiseReadFile } from '../../utils/promiseFs';
-export interface Serverlog {
- pid: number;
- time: number;
- rss: number;
- processMemoryCur: number;
- processMemoryMax: number;
- pcMemoryCur: number;
- pcMemoryMax: number;
- loadAverage1: number;
- loadAverage5: number;
- loadAverage15: number;
-}
-
-export interface ReadServerlog {
-  run({ path: string }): Promise<Array<Serverlog>>;
-}
+import { ReadServerlog, Serverlog } from '../usecases/interface/readServerlog';
 
 export class ReadServerlogRequest implements ReadServerlog {
   run({ path }): Promise<Array<Serverlog>>{

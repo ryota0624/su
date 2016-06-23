@@ -4,9 +4,6 @@ import { LoadTestGateway, SutyClientConfig } from './interface/loadTest';
 
 import { processStausFactory } from '../model/processStatus';
 import { ProcessStatusRepo } from '../repository/processStatus';
-import { configCreator, distpathCreator } from './helper/index'
-
-
 
 export interface MesureParams {
   loadTestGW: LoadTestGateway, 
@@ -20,7 +17,7 @@ export class Mesure {
   readClientlogGW: ReadClientlog;
   mergeWithServerlogGW: MergeWithServerlog;
   processStatusRepo: ProcessStatusRepo;
-
+  
   constructor(params: MesureParams) {
     this.loadTestGW = params.loadTestGW;
     this.readClientlogGW = params.readClientlogGW;
@@ -28,12 +25,16 @@ export class Mesure {
     this.processStatusRepo = params.processStatusRepo;
   }
   run(config: SutyClientConfig) {
-    const tasks = config.phases.map(phase => {
-      const task = configCreator(phase, config);
-      return () => this.loadTestGW.run(task)
-    })
-    return tasks.reduce((pre, cur) => {
-      return pre.then(cur);
-    }, Promise.resolve(0));
+    return this.loadTestGW.run(config)
+      .then(resultpath => this.readClientlogGW.run())
+      .then(clientlogs => this.mergeWithServerlogGW.run({ clientlogs }))
+      .then(mergedlogs => processStausFactory(mergedlogs))
+      .then(processStatuses => processStatuses.forEach(processStatus => {
+        this.processStatusRepo.add(config.logname ,processStatus);
+      }))
+      .then(() => console.log(this.processStatusRepo))
   }
 }
+
+// const m = new Mesure({ loadTestGW: null, readClientlogGW:null, readServerlogGW: null });
+// console.log(m);

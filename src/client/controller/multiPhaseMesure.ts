@@ -2,7 +2,7 @@ import { Mesure } from '../usecases/mesure';
 import { OutputStatus } from '../usecases/outputStatus';
 
 import { OutputCSVFile } from '../gateway/output';
-import { ArtilleryGateway, SutyClientConfig } from '../gateway/loadTest';
+import { ArtilleryGateway } from '../gateway/loadTest';
 import { ReadClientlogFS } from '../gateway/readClientlog';
 import { ReadServerlogRequest } from '../gateway/readServerlog';
 import { MergeWithServerlogRequest, MergeWithServerlogFS } from '../gateway/mergeWithServerlog';
@@ -16,7 +16,7 @@ import{ sleep } from '../../utils/sleep';
 
 import { configCreator, distpathCreator } from './creator/index'
 
-export default function multiMesureController(config: SutyClientConfig) {
+export default function multiMesureController(config) {
   const usecases = config.phases.map(phase => {
     if(phase.pause) return () => sleep(phase.pause * 1000);
 

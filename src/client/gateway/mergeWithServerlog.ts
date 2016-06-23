@@ -1,13 +1,8 @@
-import { Clientlog } from './readClientlog';
-import { ReadServerlogRequest, Serverlog, ReadServerlog, ReadServerlogFS } from './readServerlog';
+import { Clientlog } from '../usecases/interface/readClientlog';
+import { ReadServerlogRequest, ReadServerlogFS } from './readServerlog';
+import { Serverlog, ReadServerlog } from '../usecases/interface/readServerLog';
 import * as _ from 'lodash';
-interface MergedLog extends Serverlog, Clientlog {
-}
-export interface MergeWithServerlog {
-  readServerlog: ReadServerlog;
-  path: string;
-  run({ clientlogs }: { clientlogs: Array<Clientlog> }):Promise<Array<any>>
-}
+import { MergeWithServerlog } from '../usecases/interface/mergeWithServerlog';
 
 export class MergeWithServerlogRequest implements MergeWithServerlog {
   path: string;

@@ -1,4 +1,4 @@
-import { ExternalApp } from '../gateway/externalApp';
+import { ExternalApp } from './interface/externalApp';
 
 export class OpenFile {
   externalApp: ExternalApp;

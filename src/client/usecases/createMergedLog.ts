@@ -1,5 +1,5 @@
 import { ReadClientlog } from '../gateway/readClientlog';
-import { MergeWithServerlog } from '../gateway/mergeWithServerlog';
+import { MergeWithServerlog } from './interface/mergeWithServerlog';
 
 import { processStausFactory } from '../model/processStatus';
 import { ProcessStatusRepo } from '../repository/processStatus';
