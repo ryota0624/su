@@ -1,5 +1,5 @@
 import { ReadClientlog } from '../gateway/readClientlog';
-import { MergeWithServerlog } from '../gateway/mergeWithServerlog';
+// import { MergeWithServerlog } from '../gateway/mergeWithServerlog';
 import { LoadTestGateway, SutyClientConfig } from './gatewayInterfaces/loadTest';
 
 import { processStausFactory } from '../model/processStatus';

@@ -1,4 +1,4 @@
-export default class HttpState {
+export default class RequestState {
   time: number;
   responseTime: number;
   statusCode: number;
@@ -8,12 +8,13 @@ export default class HttpState {
     this.statusCode = statusCode;
   }
 }
+
 const defaultParams = {
   time: 0,
   responseTime: 0,
   statusCode: 0,
 }
 
-export function createEmptyHttpState() {
-  return new HttpState;
+export function createRequestState({ time, responseTime, statusCode } = defaultParams) {
+  return new RequestState({ time, responseTime, statusCode });
 }

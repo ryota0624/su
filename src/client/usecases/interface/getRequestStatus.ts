@@ -1,4 +1,5 @@
+import RequestState from '../../model/requestState';
 export interface GetRequestStatus {
   readpath: string;
-  run(): Promise<Array<RequestState>>;
+  run(config: { path:string }): Promise<Array<RequestState>>;
 }

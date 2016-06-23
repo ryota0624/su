@@ -13,5 +13,5 @@ export interface SutyJob {
 
 export interface LoadTestGateway {
   resultpath: string;
-  run(config: SutyJob): Promise<any>;
+  run(config: SutyJob, resultpath: string): Promise<any>;
 }

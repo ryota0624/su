@@ -34,6 +34,6 @@ const defaultParams = {
   'la/5min': 0,
   'la/15min': 0,
 }
-export function createEmptyServerState() {
-  return new ServerState;
+export function createServerState(args = defaultParams) {
+  return new ServerState(args);
 }
