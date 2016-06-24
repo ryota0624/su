@@ -1,6 +1,6 @@
 export interface ReadClientlog {
   readpath: string;
-  run(): Promise<Array<Clientlog>>;
+  run({ path: string }): Promise<Array<Clientlog>>;
 }
 
 export interface Clientlog {

@@ -5,5 +5,5 @@ import { Serverlog, ReadServerlog } from './readServerlog';
 export interface MergeWithServerlog {
   readServerlog: ReadServerlog;
   path: string;
-  run({ clientlogs }: { clientlogs: Array<Clientlog> }):Promise<Array<any>>
+  run({ clientlogs, path }: { clientlogs: Array<Clientlog>, path: string }):Promise<Array<any>>
 }

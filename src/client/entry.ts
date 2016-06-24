@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import mesureQuickContoller from './controller/mesureQuick';
-import mesureTestContoller from './controller/mesureTest';
+// import mesureTestContoller from './controller/mesureTest';
 import multiPhaseMesureContoller from './controller/multiPhaseMesure';
+import mesureContoller from './controller/mesure';
 import timeGroupedContoller from './controller/timeGrouped';
 import onlyAttackController from './controller/multiPhaseOnlyAttack';
 import createMergedLogController from './controller/createMergedLog';
@@ -14,7 +15,8 @@ switch (process.argv[2]) {
     break;
   }
   case 'client': {
-    multiPhaseMesureContoller(clientConfig);
+    mesureContoller(clientConfig);
+    // multiPhaseMesureContoller(clientConfig);
     break;
   }
   case 'mergelog': {
@@ -30,7 +32,7 @@ switch (process.argv[2]) {
     break;
   }
   case 'test:client': {
-    mesureTestContoller(clientConfig);
+    // mesureTestContoller(clientConfig);
     break;
   }
 }

@@ -14,7 +14,7 @@ export default function multiMesureController(config) {
      if(phase.pause) return () => sleep(phase.pause * 1000);
     const newConfig = configCreator(phase, config);
     const distpath = distpathCreator(newConfig);
-    const artillery = new ArtilleryGateway({ path: distpath.loadTest });
+    const artillery = new ArtilleryGateway;
     const mesureUsecase = new OnlyAttack({ loadTestGW: artillery });
     return () => mesureUsecase.run(newConfig);
   });

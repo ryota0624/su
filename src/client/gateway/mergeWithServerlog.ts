@@ -7,12 +7,10 @@ import { MergeWithServerlog } from '../usecases/interface/mergeWithServerlog';
 export class MergeWithServerlogRequest implements MergeWithServerlog {
   path: string;
   readServerlog: ReadServerlog;
-  constructor({ path }) {
-    this.path = path;
+  constructor() {
     this.readServerlog = new ReadServerlogRequest;
   }
-  run({ clientlogs }: { clientlogs: Array<Clientlog> }): Promise<Array<any>> {
-    const path = this.path;
+  run({ clientlogs, path }: { clientlogs: Array<Clientlog>, path: string }): Promise<Array<any>> {
     const clientlogLen = clientlogs.length;
     // return getServerlogsReachClientlogsLen(path, clientlogLen, this.readServerlog)
     return getServerLogsReachNum(path, clientlogLen, this.readServerlog)
@@ -23,8 +21,7 @@ export class MergeWithServerlogRequest implements MergeWithServerlog {
 export class MergeWithServerlogFS implements MergeWithServerlog {
   path: string;
   readServerlog: ReadServerlog;
-  constructor({ path }) {
-    this.path = path;
+  constructor() {
     this.readServerlog = new ReadServerlogFS;
   }
   run({ clientlogs }: {  clientlogs: Array<Clientlog> }): Promise<Array<any>> {

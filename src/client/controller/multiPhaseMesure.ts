@@ -17,27 +17,27 @@ import{ sleep } from '../../utils/sleep';
 import { configCreator, distpathCreator } from './creator/index'
 
 export default function multiMesureController(config) {
-  const usecases = config.phases.map(phase => {
-    if(phase.pause) return () => sleep(phase.pause * 1000);
+  // const usecases = config.phases.map(phase => {
+  //   if(phase.pause) return () => sleep(phase.pause * 1000);
 
-    const newConfig = configCreator(phase, config);
-    const distpath = distpathCreator(newConfig);
+  //   const newConfig = configCreator(phase, config);
+  //   const distpath = distpathCreator(newConfig);
     
-    const artillery = new ArtilleryGateway({ path: distpath.loadTest });
-    const readClientlog = new ReadClientlogFS({ path: distpath.loadTest + '.json'});
-    const mergeWithServerlog = new MergeWithServerlogRequest({ path: config.target });
+  //   const artillery = new ArtilleryGateway;
+  //   const readClientlog = new ReadClientlogFS({ path: distpath.loadTest + '.json'});
+  //   const mergeWithServerlog = new MergeWithServerlogRequest({ path: config.target });
 
-    const mesureUsecase = new Mesure({ processStatusRepo ,loadTestGW: artillery, readClientlogGW: readClientlog, mergeWithServerlogGW: mergeWithServerlog });
+  //   const mesureUsecase = new Mesure({ processStatusRepo ,loadTestGW: artillery, readClientlogGW: readClientlog, mergeWithServerlogGW: mergeWithServerlog });
 
-    return () => mesureUsecase.run(newConfig).then(() => {
-      const output = new OutputCSVFile({ path: distpath.csv });
-      const defaultApp = new DefaultApp(distpath.csv);
-      const outputStatus = new OutputStatus({ output, statusRepo: processStatusRepo, externalApp: defaultApp });
-      const argvConfig = parseArgv(config);
-      return outputStatus.run({ timeFormat: argvConfig.timeformat });
-    });
-  });
-  usecases.reduce((pre, cur) => pre.then(cur), Promise.resolve(0))
+  //   return () => mesureUsecase.run(newConfig).then(() => {
+  //     const output = new OutputCSVFile({ path: distpath.csv });
+  //     const defaultApp = new DefaultApp(distpath.csv);
+  //     const outputStatus = new OutputStatus({ output, statusRepo: processStatusRepo, externalApp: defaultApp });
+  //     const argvConfig = parseArgv(config);
+  //     return outputStatus.run({ timeFormat: argvConfig.timeformat });
+  //   });
+  // });
+  // usecases.reduce((pre, cur) => pre.then(cur), Promise.resolve(0))
 }
 
 function parseArgv(config) {

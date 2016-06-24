@@ -18,14 +18,11 @@ export class MockLoadTest implements LoadTestGateway {
     this.resultpath = path;
   }
   run(config: SutyClientConfig) {
-    return Promise.resolve(this.resultpath);
+    return Promise.resolve(config.outputpath);
   }
 }
 export class ArtilleryGateway implements LoadTestGateway{
   resultpath: string;
-  constructor({ path }: { path: string }) {
-    this.resultpath = path;
-  }
   run(config: SutyClientConfig) {
     this.init(config);
     return getPromise(`${config.target}/suty/start`)
@@ -39,7 +36,7 @@ export class ArtilleryGateway implements LoadTestGateway{
     return new Promise((res, rej) => {
       const spawn = require('child_process').spawn;
       const artilleryPath = `${process.env.PWD}/node_modules/artillery/bin/artillery`;
-      const artillery = spawn(artilleryPath, ['run', `${__dirname}/config.json`, '-o', this.resultpath]);
+      const artillery = spawn(artilleryPath, ['run', `${__dirname}/config.json`, '-o', config.outputpath]);
       artillery.stdout.pipe(process.stdout);
       artillery.stderr.pipe(process.stderr);
       artillery.on('close', code => {

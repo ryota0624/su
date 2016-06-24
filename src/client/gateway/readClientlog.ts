@@ -1,24 +1,15 @@
 import * as fs from '../../utils/promiseFs';
-import { Clientlog } from '../usecases/interface/readClientlog';
+import { Clientlog, ReadClientlog } from '../usecases/interface/readClientlog';
 
 function parseArtilleryLogs(latencies): Array<Clientlog> {
   return latencies
     .map(latency => ({ time: latency[0], responseTime: latency[2] ,statusCode: latency[3] }));
     //.map(log => `${log.time},${log.responseTime},${log.statusCode}`);
 }
-
-export interface ReadClientlog {
-  readpath: string;
-  run(): Promise<Array<Clientlog>>;
-}
-
 export class ReadClientlogFS implements ReadClientlog {
   readpath: string;
-  constructor({ path }: { path: string }) {
-    this.readpath = path;
-  }
-  run() {
-    return fs.promiseReadFile(this.readpath)
+  run({ path }) {
+    return fs.promiseReadFile(path)
     .then((artilleryReportFile: any) =>  JSON.parse(artilleryReportFile).aggregate.latencies)
     .then(artilleryLogs => parseArtilleryLogs(artilleryLogs))
   }

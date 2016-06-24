@@ -1,4 +1,4 @@
-import { ReadClientlog } from '../gateway/readClientlog';
+import { ReadClientlog } from './interface/readClientlog';
 import { MergeWithServerlog } from './interface/mergeWithServerlog';
 
 import { processStausFactory } from '../model/processStatus';
@@ -23,11 +23,11 @@ export class CreateMergedLog {
     this.config = params.config;
   }
   run() {
-    return this.readClientlogGW.run()
-      .then(clientlogs => this.mergeWithServerlogGW.run({ clientlogs }))
-      .then(mergedlogs => processStausFactory(mergedlogs))
-      .then(processStatuses => processStatuses.forEach((processStatus, key) => {
-        this.processStatusRepo.add(this.config.logname + key ,processStatus);
-      })).then(() => console.log(this.processStatusRepo)).catch(err => console.log(err))
+    // return this.readClientlogGW.run({ path: null })
+    //   .then(clientlogs => this.mergeWithServerlogGW.run({ clientlogs }))
+    //   .then(mergedlogs => processStausFactory(mergedlogs))
+    //   .then(processStatuses => processStatuses.forEach((processStatus, key) => {
+    //     this.processStatusRepo.add(this.config.logname + key ,processStatus);
+    //   })).then(() => console.log(this.processStatusRepo)).catch(err => console.log(err))
   }
 }

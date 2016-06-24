@@ -6,7 +6,7 @@ export interface SutyClientConfig {
   timeout: number;
   scenarios: any;
   logname: string;
-  outputdir: string;
+  outputpath: string;
   spreadSheetSoftwarePath: string;
   phases: Array<{ duration: number, arrivalRate: number, name: string, pause?: number }>
 }
@@ -14,4 +14,10 @@ export interface SutyClientConfig {
 export interface LoadTestGateway {
   resultpath: string;
   run(config: SutyClientConfig): Promise<any>;
+}
+
+export interface LoadTestPhase {
+  arrivalRate: number,
+  duration: number,
+  name: string,
 }

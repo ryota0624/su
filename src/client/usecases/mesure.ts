@@ -1,4 +1,4 @@
-import { ReadClientlog } from '../gateway/readClientlog';
+import { ReadClientlog } from './interface/readClientlog';
 import { MergeWithServerlog } from './interface/mergeWithServerlog';
 import { LoadTestGateway, SutyClientConfig } from './interface/loadTest';
 
@@ -28,12 +28,21 @@ export class Mesure {
     this.processStatusRepo = params.processStatusRepo;
   }
   run(config: SutyClientConfig) {
-    const tasks = config.phases.map(phase => {
-      const task = configCreator(phase, config);
-      return () => this.loadTestGW.run(task)
-    })
-    return tasks.reduce((pre, cur) => {
-      return pre.then(cur);
-    }, Promise.resolve(0));
+    const configs = this.makeConfigs(config);
+    const tests = configs.reduce((pre, cur) => pre.then(() => this.loadTestGW.run(cur.task)), Promise.resolve(0));
+    tests.then(() => this.totalStatus(configs))
+  }
+
+  private makeConfigs(config: SutyClientConfig) {
+    return config.phases.map(phase => {
+      const task: SutyClientConfig = configCreator(phase, config);
+      const distpath = distpathCreator(task);
+      task.outputpath = distpath.loadTest;
+      return { task, distpath } //this.loadTestGW.run(task)
+    });
+  }
+
+  private totalStatus(tasks: Array<{ task: SutyClientConfig, distpath: { csv: string, loadTest: string } }>) {
+    tasks.map(task => this.readClientlogGW.run({ path: task.distpath }));
   }
 }

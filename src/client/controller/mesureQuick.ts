@@ -14,20 +14,20 @@ const processStatusRepo = new ProcessStatusRepoFS;
 
 import { distpathCreator } from './creator/index';
 
-export default function mesureController(config) {
-  const argvConfig = parseArgv(config);
-  const distpath = distpathCreator(argvConfig);
-  console.log(argvConfig)
-  const artillery = new ArtilleryGateway({ path: distpath.loadTest });
-  const readClientlog = new ReadClientlogFS({ path: distpath.loadTest + '.json'});
-  const mergeWithServerlog = new MergeWithServerlogRequest({ path: argvConfig.target });
-  const mesureUsecase = new Mesure({ processStatusRepo ,loadTestGW: artillery, readClientlogGW: readClientlog, mergeWithServerlogGW: mergeWithServerlog });
-  mesureUsecase.run(argvConfig).then(() => {
-    const output = new OutputCSVFile({ path: distpath.csv });
-    const defaultApp = new DefaultApp(distpath.csv);
-    const outputStatus = new OutputStatus({ output, statusRepo: processStatusRepo, externalApp: defaultApp });
-    return outputStatus.run({ timeFormat: argvConfig.timeformat });
-  });
+export default function mesureQucickController(config) {
+  // const argvConfig = parseArgv(config);
+  // const distpath = distpathCreator(argvConfig);
+  // console.log(argvConfig)
+  // const artillery = new ArtilleryGateway;
+  // const readClientlog = new ReadClientlogFS({ path: distpath.loadTest + '.json'});
+  // const mergeWithServerlog = new MergeWithServerlogRequest({ path: argvConfig.target });
+  // const mesureUsecase = new Mesure({ processStatusRepo ,loadTestGW: artillery, readClientlogGW: readClientlog, mergeWithServerlogGW: mergeWithServerlog });
+  // mesureUsecase.run(argvConfig).then(() => {
+  //   const output = new OutputCSVFile({ path: distpath.csv });
+  //   const defaultApp = new DefaultApp(distpath.csv);
+  //   const outputStatus = new OutputStatus({ output, statusRepo: processStatusRepo, externalApp: defaultApp });
+  //   return outputStatus.run({ timeFormat: argvConfig.timeformat });
+  // });
 }
 
 
