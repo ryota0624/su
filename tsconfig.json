@@ -5,7 +5,9 @@
         "noImplicitAny": false,
         "sourceMap": false,
         "allowUnreachableCode": true,
-        "noEmitOnError": false
+        "noEmitOnError": false,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
     },
     "exclude": [
         "node_modules", "typings/browser", "typings/browser.d.ts","test"
