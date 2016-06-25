@@ -1,5 +1,5 @@
 import * as fs from '../../../utils/promiseFs';
-import { Clientlog, ClientlogRecord } from '../../domain/usecase/interface/readClientlog';
+import { Clientlog, ClientlogRecord } from '../../domain/interface/readClientlog';
 import {injectable} from 'inversify';
 
 function parseArtilleryLogs(latencies): Array<ClientlogRecord> {

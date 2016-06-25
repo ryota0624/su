@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 
-import { ExternalApp } from '../../domain/usecase/interface/externalApp';
+import { ExternalApp } from '../../domain/interface/externalApp';
 
 const openFile = (openApp) => (filename) => exec(`open -a '${openApp}' ${filename}`, (err, data) => {
   if(err) {

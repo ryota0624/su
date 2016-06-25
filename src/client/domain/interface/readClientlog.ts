@@ -1,4 +1,3 @@
-import Request from '../../model/request';
 export interface ClientlogRecord {
   responseTime: number;
   statusCode: number;

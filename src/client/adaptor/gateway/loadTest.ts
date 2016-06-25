@@ -3,7 +3,7 @@ import { spawnSync } from 'child_process'
 import { getPromise } from '../../../utils/request';
 import { injectable } from "inversify";
 
-import { LoadTestGateway, SutyClientConfig } from '../../domain/usecase/interface/loadTest';
+import { LoadTestGateway, SutyClientConfig } from '../../domain/interface/loadTest';
 
 export interface ArtilleryConfig {
   config: {

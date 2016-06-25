@@ -1,5 +1,3 @@
-import Process from '../../model/process';
-import Computer from '../../model/computer';
 export interface ServerlogRecord {
   computer: {
     'la/1min': number;

@@ -1,7 +1,7 @@
 import { csvToArray } from '../../../utils/csv';
 import { getPromise } from '../../../utils/request';
 import { promiseReadFile } from '../../../utils/promiseFs';
-import { Serverlog, ServerlogRecord } from '../../domain/usecase/interface/readServerlog';
+import { Serverlog, ServerlogRecord } from '../../domain/interface/readServerlog';
 import {injectable} from 'inversify';
 
 @injectable()

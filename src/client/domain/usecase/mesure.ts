@@ -1,12 +1,14 @@
-import { Clientlog } from './interface/readClientlog';
-import { LoadTestGateway, SutyClientConfig } from './interface/loadTest';
-import { Serverlog } from './interface/readServerlog';
+import { Clientlog } from '../interface/readClientlog';
+import { LoadTestGateway, SutyClientConfig } from '../interface/loadTest';
+import { Serverlog } from '../interface/readServerlog';
 // import RunningRepository from './interface/repository/runningRepository';
 import { createMetrics } from '../model/metrics';
 import { createRunning } from '../model/running';
 import { createComputer } from '../model/computer';
 import { createProcess } from '../model/process';
 import { createRequest } from '../model/request';
+import {injectable, inject} from 'inversify';
+
 
 export interface MesureParams {
   loadTest: LoadTestGateway,
@@ -15,15 +17,19 @@ export interface MesureParams {
   // runningRepository: RunningRepository,
   testConfig: SutyClientConfig
 }
+export interface MesureUsecaseI {
+  run(tasks: Array<SutyClientConfig>);
+}
 
-export class MesureUsecase {
+@injectable()
+export class MesureUsecase implements MesureUsecaseI {
   loadTest: LoadTestGateway;
   clientlog: Clientlog;
   serverlog: Serverlog;
   constructor(
-    loadTest: LoadTestGateway,
-    clientlog: Clientlog,
-    serverlog: Serverlog
+    @inject("LoadTestGateway") loadTest: LoadTestGateway,
+    @inject("Clientlog") clientlog: Clientlog,
+    @inject("Serverlog") serverlog: Serverlog
   ) {
     this.loadTest = loadTest;
     this.clientlog = clientlog;
