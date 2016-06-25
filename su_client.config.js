@@ -21,8 +21,6 @@ module.exports = {
    * ss.SS -> 秒.ミリ秒
    */
   logname: 'date',
-  outputdir: __dirname + '/report',
-  convertedOutput:  __dirname + '/convertedLog',
   spreadSheetSoftwarePath: '/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel'
 };
 

@@ -5,7 +5,9 @@ export default class Computer {
   osFreeMem: number;
   osTotalMem: number;
   relativeTime: number;
+  mid: number;
   constructor(param = defaultParams) {
+    this.mid = param.mid;
     this.relativeTime = param.relativeTime;
     this.osFreeMem = param.osFreeMem;
     this.osTotalMem = param.osTotalMem;
@@ -22,13 +24,17 @@ const defaultParams = {
   'la/1min': 0,
   'la/5min': 0,
   'la/15min': 0,
+  mid: 0,
 }
 
-export function createComputer(param: {'la/1min': number;
+export function createComputer(param: {
+  'la/1min': number;  
   'la/5min': number;
   'la/15min': number;
   osFreeMem: number;
   osTotalMem: number;
-  relativeTime: number;}) {
+  relativeTime: number;
+  mid: number;
+}) {
     return new Computer(param);
 }

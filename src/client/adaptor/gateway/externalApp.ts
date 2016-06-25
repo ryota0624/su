@@ -9,13 +9,9 @@ const openFile = (openApp) => (filename) => exec(`open -a '${openApp}' ${filenam
 });
 
 export class DefaultApp implements ExternalApp {
-  filename: string;
-  constructor(filename) {
-    this.filename = filename;
-  }
- run() {
+ open(filename: string) {
     return new Promise((res, rej) => {
-      exec(`open ${this.filename}`, (err, data) => {
+      exec(`open ${filename}`, (err, data) => {
         if(err) process.stderr.write(err.toString());
         res(data);
       });

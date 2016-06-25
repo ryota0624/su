@@ -1,4 +1,3 @@
 export interface ExternalApp {
-  filename: string;
-  run()
+  open(filename: string)
 }

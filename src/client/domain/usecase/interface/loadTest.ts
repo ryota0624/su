@@ -1,6 +1,7 @@
-import {injectable} from 'inversify';
 
 export interface SutyClientConfig {
+  clientlogPath: string;
+  serverlogPath: string;
   target: string;
   duration: number;
   rate: number;
@@ -8,15 +9,12 @@ export interface SutyClientConfig {
   timeout: number;
   scenarios: any;
   logname: string;
-  outputpath: string;
   spreadSheetSoftwarePath: string;
   phases: Array<LoadTestPhase>
 }
 
-@injectable()
-export abstract class LoadTestGateway {
-  resultpath: string;
-  abstract run(): Promise<any>;
+export interface LoadTestGateway {
+  run(config: SutyClientConfig): Promise<any>;
 }
 
 export interface LoadTestPhase {

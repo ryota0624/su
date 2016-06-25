@@ -1,42 +1,57 @@
-import { ReadClientlog } from './interface/readClientlog';
+import { Clientlog } from './interface/readClientlog';
 import { LoadTestGateway, SutyClientConfig } from './interface/loadTest';
-import { ReadServerlog } from './interface/readServerlog';
+import { Serverlog } from './interface/readServerlog';
 // import RunningRepository from './interface/repository/runningRepository';
 import { createMetrics } from '../model/metrics';
 import { createRunning } from '../model/running';
-import {injectable, inject} from 'inversify';
-
+import { createComputer } from '../model/computer';
+import { createProcess } from '../model/process';
+import { createRequest } from '../model/request';
 
 export interface MesureParams {
-  loadTest: LoadTestGateway, 
-  readClientlog: ReadClientlog, 
-  readServerlog: ReadServerlog,
+  loadTest: LoadTestGateway,
+  readClientlog: Clientlog,
+  readServerlog: Serverlog,
   // runningRepository: RunningRepository,
   testConfig: SutyClientConfig
 }
-@injectable()
+
 export class MesureUsecase {
-  runnings: Array<MesureParams>
-  constructor(runnings: Array<MesureParams>) {
-    this.runnings = runnings;
+  loadTest: LoadTestGateway;
+  clientlog: Clientlog;
+  serverlog: Serverlog;
+  constructor(
+    loadTest: LoadTestGateway,
+    clientlog: Clientlog,
+    serverlog: Serverlog
+  ) {
+    this.loadTest = loadTest;
+    this.clientlog = clientlog;
+    this.serverlog = serverlog;
   }
-  run() {
-    const tests = this.runnings.map(running => () => this.test(running)).reduce((pre: any, cur) => pre.then(cur), Promise.resolve(0));
+
+  run(tasks: Array<SutyClientConfig>) {
+    tasks
+      .map(config => () => this.task(config))
+      .reduce((pre: any, cur) => pre.then(cur), Promise.resolve(0));
   }
-  private test(param: MesureParams) {
+  private task(config: SutyClientConfig) {
     let _requests = null;
     let _computers = null;
     let _processes = null;
-    return param.loadTest.run()
-      .then(() => param.readClientlog.run())
-      .then(requests => _requests = requests)
-      .then(() => param.readServerlog.run())
-      .then(server => {
-        _computers = server.computers;
-        _processes = server.processes;
+    const metricsId = (new Date).getTime();
+    return this.loadTest.run(config)
+      .then(() => this.clientlog.get({ path: config.clientlogPath }))
+      .then(requests => {
+        _requests = requests.map(record => createRequest(Object.assign(record, { mid: metricsId })))
       })
-      .then(() => createMetrics({ requests: _requests, processes: _processes, computers: _computers }))
-      .then(metrics => createRunning({ name: param.testConfig.logname, rid: "", duration: param.testConfig.duration, arrivalRate: param.testConfig.rate }, [metrics]))
+      .then(() => this.serverlog.get({ path: config.serverlogPath }))
+      .then(serverlogs => {
+        _computers = serverlogs.map(record => createComputer(Object.assign(record.computer, { mid: metricsId })));
+        _processes = serverlogs.map(record => createProcess(Object.assign(record.process, { mid: metricsId })));
+      })
+      .then(() => createMetrics({ id: metricsId, requests: _requests, processes: _processes, computers: _computers }))
+      .then(metrics => createRunning({ name: config.logname, rid: (new Date).getTime().toString(), duration: config.duration, arrivalRate: config.rate }, [metrics]))
       .then(running => console.log(running))
   }
 }
