@@ -3,7 +3,7 @@ export default class Request {
   statusCode: number;
   mid: number;
   constructor(param = { responseTime: 0, statusCode: 0, mid: 0 }) {
-    this.responseTime = param.responseTime;
+    this.responseTime = Number(param.responseTime);
     this.statusCode = param.statusCode;
     this.mid = param.mid;
   }

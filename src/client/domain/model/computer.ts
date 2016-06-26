@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 export default class Computer {
   'la/1min': number;
   'la/5min': number;
@@ -8,12 +9,16 @@ export default class Computer {
   mid: number;
   constructor(param = defaultParams) {
     this.mid = param.mid;
-    this.relativeTime = param.relativeTime;
-    this.osFreeMem = param.osFreeMem;
-    this.osTotalMem = param.osTotalMem;
-    this['la/1min'] = param['la/1min'];
-    this['la/5min'] = param['la/5min'];
-    this['la/15min'] = param['la/15min'];
+    this.relativeTime = Number(param.relativeTime);
+    this.osFreeMem = Number(param.osFreeMem);
+    this.osTotalMem = Number(param.osTotalMem);
+    this['la/1min'] = Number(param['la/1min']);
+    this['la/5min'] = Number(param['la/5min']);
+    this['la/15min'] = Number(param['la/15min']);
+  }
+  setTimeFormat(format:string) {
+    const formatedTime = moment(this.relativeTime).format(format);
+    return new Computer(Object.assign({}, this, { relativeTime: formatedTime }));
   }
 }
 

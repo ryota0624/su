@@ -13,8 +13,13 @@ export interface SutyClientConfig {
   phases: Array<LoadTestPhase>
 }
 
-export interface LoadTestGateway {
-  run(config: SutyClientConfig): Promise<any>;
+// export interface LoadTestGateway {
+//   run(config: SutyClientConfig): Promise<any>;
+// }
+
+export abstract class LoadTestGateway {
+  abstract run(config: SutyClientConfig): Promise<any>;
+  static interfaceName = Symbol("LoadTestGateway");
 }
 
 export interface LoadTestPhase {

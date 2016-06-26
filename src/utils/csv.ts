@@ -1,6 +1,5 @@
 'use strict';
 export function csvToArray(csv) {
-  console.log(csv)
   const lineToObj = (line) => line.split(',')
   .reduce((prev, curr, i) => {
     const data = curr;//Number(curr) || curr;

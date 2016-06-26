@@ -23,7 +23,7 @@ export class MockLoadTest implements LoadTestGateway {
   }
 }
 
-@injectable()
+@injectable()  
 export class ArtilleryGateway implements LoadTestGateway {
   run(config: SutyClientConfig) {
     this.init(config);
