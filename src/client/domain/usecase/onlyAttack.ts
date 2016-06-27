@@ -10,7 +10,7 @@ export interface OnlyAttackUsecaseI {
 export class OnlyAttackUsecase implements OnlyAttackUsecaseI {
   loadTest: LoadTestGateway;
   constructor(
-    @inject("LoadTestGateway") loadTest: LoadTestGateway
+    @inject(LoadTestGateway.interfaceName) loadTest: LoadTestGateway
   ) {
     this.loadTest = loadTest;
   }

@@ -8,6 +8,14 @@ import {injectable} from 'inversify';
 export class ReadServerlogRequest implements Serverlog {
   get({ path }): Promise<Array<ServerlogRecord>>{
     return getPromise(path)
+    .then((result: any) => {
+      if(result.errno) {
+        console.log(`${path} へのサーバログ取得リクエストに失敗しました
+        ${result}
+        `);
+      }
+      return result
+    })
     .then(res => csvToArray(res.toString()))
     .then(raw => parseServerlog(raw))
   }
@@ -16,6 +24,10 @@ export class ReadServerlogRequest implements Serverlog {
 export class ReadServerlogFS implements Serverlog {
   get({ path }): Promise<Array<ServerlogRecord>>{
     return promiseReadFile(path)
+    .then(res => {
+      console.log(res)
+      return res;
+    })
     .then(res => csvToArray(res.toString()))
     .then(raw => parseServerlog(raw))
   }

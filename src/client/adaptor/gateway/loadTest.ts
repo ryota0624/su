@@ -28,8 +28,22 @@ export class ArtilleryGateway implements LoadTestGateway {
   run(config: SutyClientConfig) {
     this.init(config);
     return getPromise(`${config.target}/suty/start`)
+    .then((result: any) => {
+      if(result.errno) {
+        console.log(`${config.target}/suty/start へのリクエストに失敗しました
+        ${result}
+        `);
+      }
+    })
     .then(() => this.test(config))
     .then(() => getPromise(`${config.target}/suty/stop`))
+    .then((result: any) => {
+      if(result.errno) {
+        console.log(`${config.target}/suty/stop へのリクエストに失敗しました
+        ${result}
+        `);
+      }
+    })
     .then(() => {
       return config
     });
