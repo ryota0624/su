@@ -15,6 +15,20 @@ export default class Metrics {
     this.id = param.id;
     this.rid = param.rid;
   }
+  private setCapacity(str) {
+    const processes = this.processes.map(elem => elem.setCapacity(str));
+    const computers = this.computers.map(elem => elem.setCapacity(str));
+    return new Metrics(Object.assign({}, this, {
+      processes,
+      computers
+    }))
+  }
+  setCapacityMB() {
+    return this.setCapacity('mb');
+  }
+  setCapacityKB() {
+    return this.setCapacity('kb');
+  }
   setTimeFormat(format) {
     const processes = this.processes.map(elem => elem.setTimeFormat(format));
     const computers = this.computers.map(elem => elem.setTimeFormat(format));

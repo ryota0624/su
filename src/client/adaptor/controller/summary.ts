@@ -10,6 +10,5 @@ export default function summaryController(config: SutyClientConfig) {
   const splitTime = Number(process.argv[5]);
   const usecase = kernel.get<SummaryUsecaseI>("SummaryUsecaseI");
   usecase.run()
-  .then(running => presenter(running, { duration, timeStr, splitTime }));
-  //   .then(running => presenter(running, config));
+  .then(running => presenter(running, { duration, timeStr, splitTime, throughProps: [] }));
 }

@@ -5,9 +5,9 @@ module.exports = {
   timeformat: 'ss.S', //サンプルを増やす milli secでとりたい時
   timeout: 30,
   phases: [
-      {"duration": 30, "arrivalRate": 5, "name": "Warm-up"},
-      // {"duration": 3, "arrivalRate": 30 , "name": "hoge"},
-      // {"duration": 6, "arrivalRate": 50, "name": "High load phase"}
+      {"duration": 3, "arrivalRate": 5, "name": "Warm-up"},
+      {"duration": 3, "arrivalRate": 30 , "name": "hoge"},
+      {"duration": 6, "arrivalRate": 50, "name": "High load phase"}
     ],
   scenarios: [
     {

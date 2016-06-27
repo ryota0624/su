@@ -20,12 +20,11 @@ export class ReadServerlogRequest implements Serverlog {
     .then(raw => parseServerlog(raw))
   }
 }
-
+@injectable()
 export class ReadServerlogFS implements Serverlog {
   get({ path }): Promise<Array<ServerlogRecord>>{
     return promiseReadFile(path)
     .then(res => {
-      console.log(res)
       return res;
     })
     .then(res => csvToArray(res.toString()))

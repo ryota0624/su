@@ -1,4 +1,5 @@
 import { exec } from 'child_process';
+import { injectable } from 'inversify';
 
 import { ExternalApp } from '../../domain/interface/externalApp';
 
@@ -8,6 +9,7 @@ const openFile = (openApp) => (filename) => exec(`open -a '${openApp}' ${filenam
   }
 });
 
+@injectable()
 export class DefaultApp implements ExternalApp {
  open(filename: string) {
     return new Promise((res, rej) => {

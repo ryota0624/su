@@ -20,6 +20,7 @@
     "summary:sec": "node js/client/entry summary sec",
     "summary:min": "node js/client/entry summary min",
 
+    "readserverStat": "node js/client/entry readserverStat",
     "server": "node js/server/single/index",
     "server:cluster": "node js/server/cluster/index"
   },

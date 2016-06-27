@@ -5,9 +5,10 @@ import Metrics from '../../domain/model/metrics';
 import Computer from '../../domain/model/computer';
 import Process from '../../domain/model/process';
 import Request from '../../domain/model/request';
-const header = ["pid", "osFreeMem", "osTotalMem", "la/1min", "la/5min", "la/15min", "heapTotal", "heapUsed", "responseTime", "statusCode"];
+let header = ["pid", "osFreeMem", "osTotalMem", "la/1min", "la/5min", "la/15min", "heapTotal", "heapUsed", "responseTime", "statusCode"];
 
-export default function(runnings: Array<Running>, config = { splitTime: 5, timeStr: "sec"/** , floorLen: 10*/, duration: 30 }) {
+export default function(runnings: Array<Running>, config = { splitTime: 5, timeStr: "sec"/** , floorLen: 10*/, duration: 30, throughProps: [] }) {
+  header = header.filter(propName => config.throughProps.indexOf(propName) === -1 ? true : false);
   const { splitTime, timeStr, duration } = config;
   const floorLen = Number((duration / splitTime).toFixed());
   // const splitTime = 6; /**　何ミリ秒 */
@@ -24,30 +25,31 @@ export default function(runnings: Array<Running>, config = { splitTime: 5, timeS
   }).join(',') + '\n';
   fs.writeFileSync(`${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`, headers);
   fs.appendFileSync(`${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`, timeHeader);
-  runnings.forEach(running => runningStr(running, splitTime, timeStr, floorLen, duration));
+  runnings.forEach(running => { runningStr(running, splitTime, timeStr, floorLen, duration)});
 }
 
 function runningStr(running: Running, splitTime, timeStr, floorLen, duration) {
-  const filenames = [];
-  const separateTimeStr = timeBase(timeStr, splitTime);
-  let headerPropElementNum = null/**ヘッダーの１プロパティごとの数値の数 */
+  try {
+    const filenames = [];
+    const separateTimeStr = timeBase(timeStr, splitTime);
+    let headerPropElementNum = null/**ヘッダーの１プロパティごとの数値の数 */
+    const propAverageObject = running.metricses.map(metrics => {
+      const zipedMetrics = _.zip<Computer | Process | Request>(metrics.computers, metrics.processes, metrics.requests);
+      const lines = zipedMetrics.map(ziped => Object.assign({}, ziped[0], ziped[1], ziped[2]))
+        .map((record: any) => Object.assign({}, record, { relativeTime: Math.floor(record.relativeTime / separateTimeStr) }));
 
-  const propAverageObject = running.metricses.map(metrics => {
-    const zipedMetrics = _.zip<Computer | Process | Request>(metrics.computers, metrics.processes, metrics.requests);
-    const lines = zipedMetrics.map(ziped => Object.assign({}, ziped[0], ziped[1], ziped[2]))
-      .map((record: any) => Object.assign({}, record, { relativeTime: Math.floor(record.relativeTime / separateTimeStr) }));
-    const timeAverage = groupedTime(lines);
-    const propAverage: any = propsLine(timeAverage, floorLen);
-    headerPropElementNum = propAverage.pid.length;
-    return propAverage;
-  });
-
-  const propLineStr = `${running.name}-${running.duration}-${running.arrivalRate}` + "," + header.map(prop => {
-    return propAverageObject[0][prop].join(',');
-  }) + "\n";
-  fs.appendFileSync(`${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`, propLineStr)
+      const timeAverage = groupedTime(lines);
+      const propAverage: any = propsLine(timeAverage, floorLen);
+      headerPropElementNum = propAverage.pid.length;
+      return propAverage;
+    });
+    const propLineStr = `${running.name}-${running.duration}-${running.arrivalRate}` + "," + header.map(prop => {
+      if(propAverageObject[0][prop]) return propAverageObject[0][prop].join(',');
+      else return ",";
+    }) + "\n";
+    fs.appendFileSync(`${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`, propLineStr);
+  } catch(err) {console.log(err)}
 }
-
 
 function parse(line: {} | Computer & Process & Request) {
   const element = header.map(prop => line[prop]);
@@ -89,6 +91,8 @@ function objectAverage(objArr, pass: Array<string> = []) :any {
 };
 
 function propsLine(recordArr, floorLen) {
+  console.log(recordArr);
+  if(!recordArr[0]) return {};
   const keys = Object.keys(recordArr[0]);
   const props = keys.map((key) => {
     const propValue = recordArr.map(record => record[key]);
