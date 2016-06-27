@@ -58,7 +58,7 @@ export class MesureUsecase implements MesureUsecaseI {
         _computers = serverlogs.map(record => createComputer(Object.assign(record.computer, { mid: metricsId })));
         _processes = serverlogs.map(record => createProcess(Object.assign(record.process, { mid: metricsId })));
       })
-      .then(() => createMetrics({ id: metricsId, rid: runningId ,requests: _requests, processes: _processes, computers: _computers }).setTimeFormat(config.timeformat))
+      .then(() => createMetrics({ id: metricsId, rid: runningId ,requests: _requests, processes: _processes, computers: _computers }))
       .then(metrics => createRunning({ name: config.logname, id: runningId, duration: config.duration, arrivalRate: config.rate }, [metrics]))
       .then(running => {
         this.runningIds.push(running.id);

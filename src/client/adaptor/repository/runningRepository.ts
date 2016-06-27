@@ -28,4 +28,8 @@ export class RunningRepositoryFS implements RunningRepository {
     const str = entries.map(entry => JSON.stringify(entry));
     fs.writeFileSync(process.env.PWD + '/logs/fileDB.json', str.join('|'));
   }
+  getAllRunning() {
+    const ids = this.getAllId();
+    return ids.map(id => this.getById(id));
+  }
 }

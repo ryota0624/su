@@ -12,7 +12,7 @@ export default function (runnings: Array<Running>, config?) {
     const metricses = running.metricses;
     fs.writeFileSync(outputname, header.join(',') + '\n');
     metricses.forEach(metrics => {
-      const m = metrics;
+      const m = metrics.setTimeFormat(config.timeFormat);
       const zipedMetrics = _.zip<Computer | Process | Request>(m.computers, m.processes, m.requests);
       const line = zipedMetrics.map(ziped => Object.assign({}, ziped[0], ziped[1], ziped[2]));
       line.forEach(i => fs.appendFileSync(outputname, parse(i)));

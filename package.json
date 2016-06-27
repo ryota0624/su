@@ -10,18 +10,18 @@
     "clean:src": "rm -rf js/*",
 
     "client": "node js/client/entry client",
-    "client:sec": "node js/client/entry client ss",
-    "client:msec": "node js/client/entry client msec ss.SSS",
-    "client:min": "node js/client/entry client mm",
-    "client:h": "node js/client/entry client hh",
+    "client:sec": "node js/client/entry client ss.SSS",
+    "client:msec": "node js/client/entry client SSS",
+    "client:min": "node js/client/entry client mm.ss",
+    "client:h": "node js/client/entry client hh.mm",
     "client:onlyAttack": "node js/client/entry onlyAttack",
     "client:quick": "node js/client/entry quick",
 
+    "summary:sec": "node js/client/entry summary sec",
+    "summary:min": "node js/client/entry summary min",
 
-    "mergelog": "node js/client/entry mergelog",
     "server": "node js/server/single/index",
-    "server:cluster": "node js/server/cluster/index",
-    "client:timeGrouped": "node js/client/entry client:timeGrouped"
+    "server:cluster": "node js/server/cluster/index"
   },
   "keywords": [],
   "author": "",

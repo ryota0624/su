@@ -3,7 +3,7 @@ import "reflect-metadata";
 import mesureContoller from './adaptor/controller/mesure';
 import onlyAttackContoller from './adaptor/controller/onlyAttack';
 import quickMesureController from './adaptor/controller/quickMesure';
-
+import summaryController from './adaptor/controller/summary';
 const clientConfig = require(`${process.env.PWD}/su_client.config.js`);
 switch (process.argv[2]) {
   case 'client': {
@@ -16,6 +16,10 @@ switch (process.argv[2]) {
   }
   case 'quick': {
     quickMesureController(clientConfig);
+    break;
+  }
+  case 'summary': {
+    summaryController(clientConfig);
     break;
   }
 }
