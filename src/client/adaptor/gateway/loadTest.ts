@@ -9,9 +9,11 @@ export interface ArtilleryConfig {
   config: {
     target: string;
     phases: Array<{ duration: number, arrivalRate: number }>;
+    variables: any,
   }
   outputname: string;
   scenarios: Array<{ flow: Array<{ get: { url: string} }> }>
+  payload: any,
 }
 export class MockLoadTest implements LoadTestGateway {
   resultpath: string;
@@ -23,7 +25,7 @@ export class MockLoadTest implements LoadTestGateway {
   }
 }
 
-@injectable()  
+@injectable()
 export class ArtilleryGateway implements LoadTestGateway {
   run(config: SutyClientConfig) {
     this.init(config);
@@ -66,15 +68,21 @@ export class ArtilleryGateway implements LoadTestGateway {
     let artyConfig: ArtilleryConfig = {
       config: {
         target: null,
-        phases: null
+        phases: null,
+        variables: null,
       },
       scenarios: null,
-      outputname: null
+      outputname: null,
+      payload: null
     };
     artyConfig.config.target = config.target;
     artyConfig.config.phases = [{ duration: config.duration, arrivalRate: config.rate }];
     artyConfig.scenarios = config.scenarios || [{ 'flow': [{'get': {'url': '/'} }]}];
+    artyConfig.config.variables = config.variables || {};
+    artyConfig.payload = config.payload || {};
+    try {
     fs.writeFileSync(`${__dirname}/config.json`, JSON.stringify(artyConfig));
+    } catch (err) { console.log(err)}
   }
 }
 

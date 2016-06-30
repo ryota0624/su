@@ -6,22 +6,25 @@ module.exports = {
   timeout: 30,
   phases: [
       {"duration": 3, "arrivalRate": 5, "name": "Warm-up"},
-      {"duration": 3, "arrivalRate": 30 , "name": "hoge"},
-      {"duration": 6, "arrivalRate": 50, "name": "High load phase"}
+      // {"duration": 3, "arrivalRate": 30 , "name": "hoge"},
+      // {"duration": 6, "arrivalRate": 50, "name": "High load phase"}
     ],
   scenarios: [
     {
-      'flow': [{'get': {url: '/ad?spotId=4'}}]
-    }
+      'flow': [{'get': {url: '/ad?spotId={{ id }}'}}, {'get': {url: '/hoge?spotId={{ id }}'}}]
+    },
   ],
-  // variables: {
-    
-  // },
+  variables: {
+    id: ["1","2","3","4"]
+  },
+  payload: {
+    fields: ["id"]
+  },
   /**
    * ss.SS -> 秒.ミリ秒
    */
   logname: 'date',
-  spreadSheetSoftwarePath: '/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel'
+  // spreadSheetSoftwarePath: '/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel'
 };
 
 //終わった後エクセル開く

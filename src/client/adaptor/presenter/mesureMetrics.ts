@@ -29,7 +29,9 @@ export default function (runnings: Array<Running>, config?) {
       const line = zipedMetrics.map(ziped => Object.assign({}, ziped[0], ziped[1], ziped[2]));
       line.forEach(i => fs.appendFileSync(outputname, parse(i)));
     });
-    app.open(outputname);
+    if(config.spreadSheetSoftwarePath) {
+      app.open(outputname);
+    }
   })
 }
 

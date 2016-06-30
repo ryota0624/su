@@ -10,7 +10,9 @@ export interface SutyClientConfig {
   scenarios: any;
   logname: string;
   spreadSheetSoftwarePath: string;
-  phases: Array<LoadTestPhase>
+  phases: Array<LoadTestPhase>;
+  variables?: any,
+  payload:any
 }
 
 // export interface LoadTestGateway {

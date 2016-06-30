@@ -78,7 +78,8 @@ npm run client -> テストの開始
 |npm run client:sec|秒リクエスト到着のテスト開始からの相対時間を秒単位でログを出力する状態で実行
 |npm run client:msec|リクエスト到着のテスト開始からの相対時間をミリ秒単位でログを出力する状態で実行
 |npm run client:min|リクエスト到着のテスト開始からの相対時間を分単位でログを出力する状態で実行
-|npm run client:quick [logname] [duration] [arrivalRate]| [duration]秒間に[arrivalRate]/1sec リクエストで実行する、[logname]でcsv出力される状態で実行 シナリオはsu_client.config.jsのscenarios配列の先頭のものが使われる
+|npm run client:quick [duration] [arrivalRate]| [duration]秒間に[arrivalRate]/1sec リクエストで実行する シナリオはsu_client.config.jsのscenarios配列の先頭のものが使われる
+|npm run client:onlyAttack|サーバへの負荷だけおこなう
 
 |serverコマンド|詳細
 |:---|:---|
@@ -87,7 +88,9 @@ npm run client -> テストの開始
 
 |その他コマンド|詳細
 |:--|:--|
-
+|npm run readserverStat [logfilepath]|[logfilepath]からcsvファイルを読み込みサマリー反映できるようにsutilleryに取り込む
+|npm run summary:sec|
+|npm run summary:min|
 |npm run clean|sutillery内のログを削除
 
 ## テストされるモジュールのルール
