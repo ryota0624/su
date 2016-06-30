@@ -1,14 +1,16 @@
 import Request, {createRequest} from './request';
 import Process, {createProcess} from './process';
 import Computer,{createComputer} from './computer';
+import { objectAverage } from '../../../utils/object';
+
 import * as _ from 'lodash';
 export default class Metrics {
   id: number;
-  rid: string;
+  rid: number;
   requests: Array<Request>;
   processes: Array<Process>;
   computers: Array<Computer>;
-  constructor(param = { id: 0, rid: "", requests: [], processes: [], computers: [] }) {
+  constructor(param = { id: 0, rid: 0, requests: [], processes: [], computers: [] }) {
     this.requests = param.requests.map(req => createRequest(req));
     this.processes = param.processes.map(pro => createProcess(pro));
     this.computers = param.computers.map(com => createComputer(com));
@@ -56,7 +58,7 @@ export default class Metrics {
     });
     return pids.map((pid: number) => {
       return { pid, processes: this.processes.filter(process => process.pid === pid) };
-    })
+    });
   }
 }
 
@@ -65,22 +67,7 @@ export function createMetrics(param: {
   processes: Array<Process>;
   computers: Array<Computer>;
   id: number;
-  rid: string;
+  rid: number;
 }) {
   return new Metrics(param);
 }
-
-
-function objectAverage(objArr, pass: Array<string> = []) :any {
-  const keys = Object.keys(objArr[0]);
-  const keyProps = keys.map(key => {
-    if (pass.indexOf(key) !== -1) return { [key]: objArr[0][key] };
-    return {
-      [key]: objArr.reduce((pre, cur, index) => {
-        const div = index === 0 ? 1 : 2;
-        return (pre + cur[key]) / div;
-      }, 0)
-    };
-  });
-  return keyProps.reduce((cur, pre) => Object.assign({}, cur, pre), {});
-};

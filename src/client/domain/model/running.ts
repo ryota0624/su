@@ -1,11 +1,11 @@
 import Metrics, { createMetrics } from './metrics';
 export default class Running {
   name: string;
-  id: string;
+  id: number;
   duration: number;
   arrivalRate: number;
   metricses: Array<Metrics>;
-  constructor(param = { name: "", id: "", duration: 0, arrivalRate: 0 , metricses: []}) {
+  constructor(param = { name: "", id: 0, duration: 0, arrivalRate: 0 , metricses: []}) {
     this.name = param.name;
     this.id = param.id;
     this.duration = param.duration;
@@ -14,7 +14,7 @@ export default class Running {
   }
 }
 
-export function createRunning(param: { name: string, id: string, duration: number, arrivalRate: number }, metricses: Array<Metrics>) {
+export function createRunning(param: { name: string, id: number, duration: number, arrivalRate: number }, metricses: Array<Metrics>) {
   const newMatrices = metricses.map(metrics => {
     const requests = metrics.requests;
     const processes = metrics.processes;

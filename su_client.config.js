@@ -5,7 +5,7 @@ module.exports = {
   timeformat: 'ss.S', //サンプルを増やす milli secでとりたい時
   timeout: 30,
   phases: [
-      {"duration": 5, "arrivalRate": 5, "name": "Warm-up"},
+      {"duration": 10000, "arrivalRate": 5000, "name": "Warm-up"},
       // {"duration": 30, "arrivalRate": 30 , "name": "hoge"},
       // {"duration": 30, "arrivalRate": 50, "name": "High load phase"}
     ],
@@ -25,6 +25,6 @@ module.exports = {
    * ss.SS -> 秒.ミリ秒
    */
 
-  // artilleryQuiet: true //artilleryQuietが黙って実行される
+  //artilleryQuiet: true //artilleryQuietが黙って実行される
   //spreadSheetSoftwarePath: '/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel' //コマンド実行後指定したアプリケーションで出力ファイルを開く
 };

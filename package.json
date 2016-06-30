@@ -16,9 +16,16 @@
     "client:h": "node js/client/entry client hh.mm",
     "client:onlyAttack": "node js/client/entry onlyAttack",
     "client:quick": "node js/client/entry quick",
+    
 
-    "summary:sec": "node js/client/entry summary sec",
-    "summary:min": "node js/client/entry summary min",
+    "summary:sec:process": "node js/client/entry summary sec process",
+    "summary:min:process": "node js/client/entry summary min process",
+
+    "summary:sec:computer": "node js/client/entry summary sec computer",
+    "summary:min:computer": "node js/client/entry summary min computer",
+
+    "summary:sec": "node js/client/entry summary sec _",
+    "summary:min": "node js/client/entry summary min _",
 
     "readserverStat": "node js/client/entry readserverStat",
     

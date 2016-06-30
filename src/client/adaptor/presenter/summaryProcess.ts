@@ -14,7 +14,7 @@ let header = ["heapTotal", "heapUsed"];
 const primaryProps = ["pid"];
 const app = new AssignedApp;
 
-export default function(runnings: Array<Running>, config = { splitTime: 5, timeStr: "sec", duration: 30, throughProps: ["statusCode"] }) {
+export default function(runnings: Array<Running>, config = { splitTime: 5, timeStr: "sec", duration: 30, throughProps: ["statusCode"] ,fileopen: true }) {
   const filename = `${process.env.PWD}/logs/summary/summary-duration${config.duration}-split${config.splitTime}-process.csv`;
   const { splitTime, timeStr, duration } = config;
   const floorLen = Number((duration / splitTime).toFixed());
@@ -31,7 +31,8 @@ export default function(runnings: Array<Running>, config = { splitTime: 5, timeS
   fs.writeFileSync(filename, headers);
   fs.appendFileSync(filename, timeHeader);
   runnings.forEach(running => { processStr(running, splitTime, timeStr, floorLen, duration, filename)});
-  app.open(filename, "/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel");
+  if(config.fileopen) app.open(filename, "/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel");
+  console.log(`output > ${filename}`);
 }
 
 function processStr(running: Running, splitTime, timeStr, floorLen, duration, filename) {
@@ -48,15 +49,10 @@ function processStr(running: Running, splitTime, timeStr, floorLen, duration, fi
     const propStrArr = propAverageObject.map(props => {
       const lineName = running.name;
       return props.map(prop => {
-        return running.name +","+ prop.processes.pid[0] +"," + prop.processes.heapTotal + "," + prop.processes.heapUsed + "\n";
+        return `${running.name}-${running.duration}-${running.arrivalRate}` +","+ prop.processes.pid[0] +"," + prop.processes.heapTotal + "," + prop.processes.heapUsed + "\n";
       }).join("");
     }).join('\n');
     fs.appendFileSync(filename, propStrArr);
-    // const propLineStr = `${running.name}-${running.duration}-${running.arrivalRate}` + "," + header.map(prop => {
-    //   if(propAverageObject[0][prop]) return propAverageObject[0][prop].join(',');
-    //   else return ",";
-    // }) + "\n";
-    // fs.appendFileSync(filename, propLineStr);
   } catch(err) {console.log(err)}
 }
 
@@ -67,7 +63,7 @@ const paramsFilter = params => {
 function splitPidProcessProcessStr(processArr: Array<{ pid: number, processes: Array<Process> }>, separateTimeStr, floorLen) {
   return processArr.map(processInfo => { 
     const processes = processInfo.processes.map(process => Object.assign({}, process, { relativeTime: Math.floor(process.relativeTime / separateTimeStr) }))
-    const filteredParams = groupedTime(processes);
+    const filteredParams = groupedTime(processes, { fixed: true });
     return { pid: processInfo.pid, processes: paramsFilter(propsLine(filteredParams, floorLen)) }
   });
 }

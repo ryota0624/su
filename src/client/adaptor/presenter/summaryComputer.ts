@@ -14,7 +14,7 @@ const throughProps = ["heapTotal", "heapUsed", "pid"];
 const primaryProps = ["pid"];
 const app = new AssignedApp;
 
-export default function(runnings: Array<Running>, config = { splitTime: 5, timeStr: "sec", duration: 30, throughProps: ["statusCode"] }) {
+export default function(runnings: Array<Running>, config = { splitTime: 5, timeStr: "sec", duration: 30, throughProps: ["statusCode"], fileopen: true }) {
   const filename = `${process.env.PWD}/logs/summary/summary-duration${config.duration}-split${config.splitTime}-computer.csv`;
   header = header.filter(propName => throughProps.indexOf(propName) === -1 ? true : false);
   const { splitTime, timeStr, duration } = config;
@@ -30,22 +30,21 @@ export default function(runnings: Array<Running>, config = { splitTime: 5, timeS
   fs.writeFileSync(filename, headers);
   fs.appendFileSync(filename, timeHeader);
   runnings.forEach(running => { runningStr(running, splitTime, timeStr, floorLen, duration, filename)});
-  app.open(filename, "/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel");
+  if(config.fileopen) app.open(filename, "/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel");
+  console.log(`output > ${filename}`);
 }
 
 function runningStr(running: Running, splitTime, timeStr, floorLen, duration, filename) {
   try {
     const filenames = [];
     const separateTimeStr = timeBase(timeStr, splitTime);
-    let headerPropElementNum = null/**ヘッダーの１プロパティごとの数値の数 */
-    const propAverageObject = running.metricses.map(metrics => {
-      console.log(metrics.getProcessStatus())
+    const propAverageObject = running.metricses.map(rawMetrics => {
+      const metrics = rawMetrics.setCapacityMB();
       const zipedMetrics = _.zip<Computer | Process | Request>(metrics.computers, metrics.processes, metrics.requests);
       const lines = zipedMetrics.map(ziped => Object.assign({}, ziped[0], ziped[1], ziped[2]))
         .map((record: any) => Object.assign({}, record, { relativeTime: Math.floor(record.relativeTime / separateTimeStr) }));
-      const timeAverage = groupedTime(lines);
+      const timeAverage = groupedTime(lines, { fixed: true });
       const propAverage: any = propsLine(timeAverage, floorLen);
-      headerPropElementNum = propAverage.pid.length;
       return propAverage;
     });
     const propLineStr = `${running.name}-${running.duration}-${running.arrivalRate}` + "," + header.map(prop => {

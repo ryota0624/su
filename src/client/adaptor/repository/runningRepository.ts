@@ -5,7 +5,7 @@ import * as fs from 'fs';
 
 @injectable()
 export class RunningRepositoryFS implements RunningRepository {
-  data: Map<string, Running> = new Map<string, Running>();
+  data: Map<number, Running> = new Map<number, Running>();
   save(entity: Running) {
     this.data.set(entity.id, entity);
     // fs.appendFileSync(process.env.PWD + '/logs/fileDB.json', strEntity);

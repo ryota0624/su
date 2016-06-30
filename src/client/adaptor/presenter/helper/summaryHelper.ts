@@ -1,16 +1,17 @@
 import * as _ from 'lodash';
-
+import { objectAverage } from '../../../../utils/object';
 export function parse(line, header) {
   const element = header.map(prop => line[prop]);
   return element.join(',') + "\n";
 }
 
-export function groupedTime(target: Array<any>) {
+export function groupedTime(target: Array<any>, config = { fixed: false }) {
   const timeGrouped = _.groupBy(target, 'relativeTime');
   const keys = Object.keys(timeGrouped);
+  const fn = config.fixed ? (a) => Math.floor(a) : (a) => a ;
   const averages = keys.map((time) => {
     const through = ["mid", "relativeTime", "pid", "statusCode"];
-    return objectAverage(timeGrouped[time], through);
+    return objectAverage(timeGrouped[time], through, fn);
   });
   return averages;
 }
@@ -24,20 +25,6 @@ export function timeBase(str ,num) {
     default: throw new Error("規定外文字列が入力されました")
   }
 }
-
-export function objectAverage(objArr, pass: Array<string> = []) :any {
-  const keys = Object.keys(objArr[0]);
-  const keyProps = keys.map(key => {
-    if (pass.indexOf(key) !== -1) return { [key]: objArr[0][key] };
-    return {
-      [key]: objArr.reduce((pre, cur, index) => {
-        const div = index === 0 ? 1 : 2;
-        return (pre + cur[key]) / div;
-      }, 0)
-    };
-  });
-  return keyProps.reduce((cur, pre) => Object.assign({}, cur, pre), {});
-};
 
 export function propsLine(recordArr, floorLen) {
   try {

@@ -29,8 +29,7 @@ export class ReadServerStatUsecase implements ReadServerStatUsecaseI {
     let _computers = null;
     let _processes = null;
     const metricsId = (new Date).getTime();
-    const runningId = metricsId.toString();
-    this.repository.init();
+    const runningId = metricsId;
     return this.serverlog.get({ path: url })
     .then(serverlogs => {
         if(serverlogs.length === 0) throw new Error("serverlogが存在していません")

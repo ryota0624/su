@@ -47,7 +47,7 @@ export class MesureUsecase implements MesureUsecaseI {
     let _computers = null;
     let _processes = null;
     const metricsId = (new Date).getTime();
-    const runningId = metricsId.toString();
+    const runningId = metricsId;
     return this.loadTest.run(config)
       .then(() => this.clientlog.get({ path: config.clientlogPath }))
       .then(requests => {
@@ -64,6 +64,6 @@ export class MesureUsecase implements MesureUsecaseI {
         this.runningIds.push(running.id);
         this.repository.save(running);
         return running;
-      }).catch(err => console.log(err))
+      })
   }
 }

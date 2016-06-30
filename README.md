@@ -100,8 +100,15 @@ npm run client -> テストの開始
 |その他コマンド|詳細
 |:--|:--|
 |npm run readserverStat [logfilepath]|[logfilepath]からcsvファイルを読み込みサマリー反映できるようにsutilleryに取り込む
-|npm run summary:sec [duration] [split]|[duration]秒の間の値を[split]秒区切りに平均したものを出力
-|npm run summary:min [duration] [split]|[duration]分の間の値を[split]秒区切りに平均したものを出力
+
+|npm run summary:sec [duration] [split] [open]|[duration]秒の間の値を[split]秒区切りに平均したものを出力
+|npm run summary:min [duration] [split] [open]|[duration]分の間の値を[split]秒区切りに平均したものを出力
+|npm run summary:sec:computer [duration] [split] [open]|コンピュータの状態を[duration]秒の間の値を[split]秒区切りに平均したものを出力
+|npm run summary:min:computer [duration] [split] [open]|コンピュータの状態を[duration]分の間の値を[split]秒区切りに平均したものを出力
+|npm run summary:sec:process [duration] [split] [open]|各プロセスの状態を[duration]秒の間の値を[split]秒区切りに平均したものを出力
+|npm run summary:min:process [duration] [split] [open]|各プロセスの状態を[duration]分の間の値を[split]秒区切りに平均したものを出力
+||[open]に"open"文字列で生成ファイルを開く
+
 |npm run clean|sutillery内のログを削除
 
 ## テストされるモジュールのルール
@@ -126,8 +133,7 @@ startDate,time,pid,rss/MB,heapUsed/MB,heapTotal/MB,osFreeMem/MB,osTotalMem/MB,la
 ```
 ヘッダーの詳細
 ```
-startDate -> clientの実行開始時間
-time -> server側の負荷開始時間からの相対時間
+relativeTime -> server側の負荷開始時間からの相対時間
 pid -> プロセスのID
 rss/MB -> regident set size
 heapUsed/MB -> ログ出力された時のプロセスの使用heap量
@@ -139,4 +145,3 @@ responseTime -> レスポンスまでにかかった時間
 
 ```
 
-k
