@@ -5,35 +5,26 @@ module.exports = {
   timeformat: 'ss.S', //サンプルを増やす milli secでとりたい時
   timeout: 30,
   phases: [
-      {"duration": 3, "arrivalRate": 5, "name": "Warm-up"},
-      // {"duration": 3, "arrivalRate": 30 , "name": "hoge"},
-      // {"duration": 6, "arrivalRate": 50, "name": "High load phase"}
+      {"duration": 5, "arrivalRate": 5, "name": "Warm-up"},
+      // {"duration": 30, "arrivalRate": 30 , "name": "hoge"},
+      // {"duration": 30, "arrivalRate": 50, "name": "High load phase"}
     ],
   scenarios: [
     {
-      'flow': [{'get': {url: '/ad?spotId={{ id }}'}}, {'get': {url: '/hoge?spotId={{ id }}'}}]
+      'flow': [
+        {'get': {url: '/ad?spotId={{ id }}'}}, 
+        {'get': {url: '/hoge?spotId={{ id }}'}}
+      ]
     },
   ],
   variables: {
     id: ["1","2","3","4"]
   },
-  payload: {
-    fields: ["id"]
-  },
+  //cap: "mb", //memory系の表示単位 kb, mb
   /**
    * ss.SS -> 秒.ミリ秒
    */
-  logname: 'date',
 
-  //artilleryQuiet: true
-  
-  // 
-  // spreadSheetSoftwarePath: '/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel'
+  // artilleryQuiet: true //artilleryQuietが黙って実行される
+  //spreadSheetSoftwarePath: '/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel' //コマンド実行後指定したアプリケーションで出力ファイルを開く
 };
-
-//終わった後エクセル開く
-// excel path 表計算ソフトのpath
-
-// 
-
-//todo target => targetURL

@@ -2,7 +2,8 @@ import { SummaryUsecaseI } from '../../domain/usecase/summary';
 import { configCreator } from './helper/index';
 import { SutyClientConfig } from '../../domain/interface/loadTest';
 import kernel from '../../inversify.config';
-import presenter from '../presenter/summaryMetrics';
+// import presenter from '../presenter/summaryComputer';
+import presenter from '../presenter/summaryProcess';
 
 export default function summaryController(config: SutyClientConfig) {
   const timeStr = process.argv[3];

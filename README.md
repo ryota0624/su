@@ -11,8 +11,6 @@ npm i
 ## テスト
 - サーバーへリクエストを送り結果をcsvファイルで出力する
 
-
-
 ## config
 - サーバ
 su_server.config.jsを記述
@@ -25,19 +23,21 @@ su_client.config.js
 module.exports = {
   target: 'http://localhost:3030', //テストの攻撃先となるサーバURL
   /*
-  scenarios 
-    テストの実行シナリオ
+  scenarios :テストの実行シナリオ
     flowは配列で配列内のオブジェクトの順序にそってリクエストを送信する
     flow内の要素オブジェクトのプロパティ名がhttpメソッド名になっていて
     リクエスト先のurlをurlプロパティとして所持したオブジェクトをもつ
   **/
   scenarios: [
     {
-      'flow': [{'post': {url: '/hoge'}},{'get': {url: '/huga'}} ]
+      'flow': [
+        {'post': {url: '/hoge'}},
+        {'get': {url: '/huga?id={{ id }}'}} 
+      ]
     }
   ]
   /*
-  テストシナリオの実行を記述する
+  phases: テストシナリオの実行を記述する
   phasesは配列で配列内のオブジェクトの順序にそってシナリオを実行する
   テストシナリオを実行するphaseでは
     duration(シナリオ実行時間), arrivalRate(リクエストのレート/秒), name(csvログファイルに出力する際の名前)を持ったオブジェクトを持つ
@@ -47,6 +47,17 @@ module.exports = {
     {'duration': 3, 'arrivalRate': 30 , 'name': 'hoge'},
     {'duration': 6, 'arrivalRate': 50, 'name': 'High load phase'}
   ],
+  /*
+  
+  /* scenarios内に埋め込める変数 配列からランダムで選ばれ、リクエストに埋め込まれる **/
+  variables: {
+    id: ["1", "2"]
+  }
+
+  cab: "mb", //heapUsedなどメモリーの項目の単位指定(kb, mb) デフォルトはkb
+
+   **/
+  artilleryQuiet: true //負荷実行中の実行ログを止める デフォルトではfalse
 
   spreadSheetSoftwarePath: '/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel'
   /**
@@ -89,8 +100,8 @@ npm run client -> テストの開始
 |その他コマンド|詳細
 |:--|:--|
 |npm run readserverStat [logfilepath]|[logfilepath]からcsvファイルを読み込みサマリー反映できるようにsutilleryに取り込む
-|npm run summary:sec|
-|npm run summary:min|
+|npm run summary:sec [duration] [split]|[duration]秒の間の値を[split]秒区切りに平均したものを出力
+|npm run summary:min [duration] [split]|[duration]分の間の値を[split]秒区切りに平均したものを出力
 |npm run clean|sutillery内のログを削除
 
 ## テストされるモジュールのルール
@@ -127,3 +138,5 @@ la/1min,la/5min,la/15min -> 1分, 5分, 15分の ロードアベレージ
 responseTime -> レスポンスまでにかかった時間
 
 ```
+
+k

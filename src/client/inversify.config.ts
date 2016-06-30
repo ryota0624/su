@@ -6,7 +6,7 @@ import { ArtilleryGateway } from './adaptor/gateway/loadTest';
 import { ReadClientlogFS } from './adaptor/gateway/readClientlog';
 import { ReadServerlogRequest, ReadServerlogFS } from './adaptor/gateway/readServerlog';
 import { RunningRepositoryFS } from './adaptor/repository/runningRepository';
-import { DefaultApp } from './adaptor/gateway/externalApp';
+import { DefaultApp, AssignedApp } from './adaptor/gateway/externalApp';
 
 import { MesureUsecase } from './domain/usecase/mesure';
 import { OnlyAttackUsecase } from './domain/usecase/onlyAttack';
@@ -20,7 +20,7 @@ kernel.bind<ArtilleryGateway>(LoadTestGateway.interfaceName).to(ArtilleryGateway
 kernel.bind<ReadClientlogFS>("Clientlog").to(ReadClientlogFS);
 kernel.bind<ReadServerlogRequest>("Serverlog").to(ReadServerlogRequest);
 kernel.bind<ReadServerlogFS>("ServerlogLocal").to(ReadServerlogFS);
-kernel.bind<DefaultApp>("ExternalApp").to(DefaultApp);
+kernel.bind<AssignedApp>("ExternalApp").to(AssignedApp);
 
 kernel.bind<RunningRepositoryFS>("RunningRepository").to(RunningRepositoryFS).inSingletonScope();
 

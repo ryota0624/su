@@ -5,9 +5,9 @@ import Computer from '../../domain/model/computer';
 import Process from '../../domain/model/process';
 import Request from '../../domain/model/request';
 
-import {DefaultApp} from '../gateway/externalApp';
+import {DefaultApp, AssignedApp} from '../gateway/externalApp';
 export default function (runnings: Array<Running>, config?) {
-  const app = new DefaultApp;
+  const app = new AssignedApp;
   const filenames = [];
   const timeformat = config ? config.timeformat : "ss.SSS";
   const cap = config.cap || "kb";
@@ -22,6 +22,7 @@ export default function (runnings: Array<Running>, config?) {
         return propName;
       }
     }).join(',') + '\n');
+    
     fs.writeFileSync(outputname, concretaHeader);
     metricses.forEach(metrics => {
       const m = cap === "mb" ? metrics.setTimeFormat(timeformat).setCapacityMB() : metrics.setTimeFormat(timeformat).setCapacityKB() ;
@@ -30,7 +31,7 @@ export default function (runnings: Array<Running>, config?) {
       line.forEach(i => fs.appendFileSync(outputname, parse(i)));
     });
     if(config.spreadSheetSoftwarePath) {
-      app.open(outputname);
+      app.open(outputname, config.spreadSheetSoftwarePath);
     }
   })
 }

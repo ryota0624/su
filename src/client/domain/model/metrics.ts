@@ -9,9 +9,9 @@ export default class Metrics {
   processes: Array<Process>;
   computers: Array<Computer>;
   constructor(param = { id: 0, rid: "", requests: [], processes: [], computers: [] }) {
-    this.requests = param.requests;
-    this.processes = param.processes;
-    this.computers = param.computers;
+    this.requests = param.requests.map(req => createRequest(req));
+    this.processes = param.processes.map(pro => createProcess(pro));
+    this.computers = param.computers.map(com => createComputer(com));
     this.id = param.id;
     this.rid = param.rid;
   }
@@ -48,6 +48,15 @@ export default class Metrics {
     const futureSize = this[propname].length / size;
     const chunkArr = _.chunk(this[propname], futureSize);
     return chunkArr.map(arr => objectAverage(arr, pass)).map(ave => fun(ave));
+  }
+  getProcessStatus() {
+    let pids = [];
+    this.processes.forEach(process => {
+      if(pids.indexOf(process.pid) === -1) pids.push(process.pid);
+    });
+    return pids.map((pid: number) => {
+      return { pid, processes: this.processes.filter(process => process.pid === pid) };
+    })
   }
 }
 

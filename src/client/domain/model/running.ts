@@ -1,4 +1,4 @@
-import Metrics from './metrics';
+import Metrics, { createMetrics } from './metrics';
 export default class Running {
   name: string;
   id: string;
@@ -13,7 +13,14 @@ export default class Running {
     this.metricses = param.metricses;
   }
 }
+
 export function createRunning(param: { name: string, id: string, duration: number, arrivalRate: number }, metricses: Array<Metrics>) {
+  const newMatrices = metricses.map(metrics => {
+    const requests = metrics.requests;
+    const processes = metrics.processes;
+    const computers = metrics.computers;
+    return new Metrics(Object.assign(metrics, { requests, computers, processes }));
+  });
   const { name, id, duration, arrivalRate } = param;
-  return new Running({ metricses, id, duration, arrivalRate, name });
+  return new Running({ metricses: newMatrices, id, duration, arrivalRate, name });
 }
