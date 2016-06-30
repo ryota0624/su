@@ -13,7 +13,7 @@ export interface ArtilleryConfig {
   }
   outputname: string;
   scenarios: Array<{ flow: Array<{ get: { url: string} }> }>
-  payload: any,
+  payload: any
 }
 export class MockLoadTest implements LoadTestGateway {
   resultpath: string;
@@ -55,11 +55,12 @@ export class ArtilleryGateway implements LoadTestGateway {
     return new Promise((res, rej) => {
       const spawn = require('child_process').spawn;
       const artilleryPath = `${process.env.PWD}/node_modules/artillery/bin/artillery`;
-      const artillery = spawn(artilleryPath, ['run', `${__dirname}/config.json`, '-o', outputpath]);
+      const artilleryCmd = ['run', `${__dirname}/config.json`, '-o', outputpath];
+      if(config.artilleryQuiet) artilleryCmd.push('-q');
+      const artillery = spawn(artilleryPath, artilleryCmd);
       artillery.stdout.pipe(process.stdout);
       artillery.stderr.pipe(process.stderr);
       artillery.on('close', code => {
-        //this.resultpath = outputpath + '.json';
         res(code);
       });
     });
@@ -73,7 +74,7 @@ export class ArtilleryGateway implements LoadTestGateway {
       },
       scenarios: null,
       outputname: null,
-      payload: null
+      payload: null,
     };
     artyConfig.config.target = config.target;
     artyConfig.config.phases = [{ duration: config.duration, arrivalRate: config.rate }];

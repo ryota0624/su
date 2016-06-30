@@ -12,7 +12,8 @@ export interface SutyClientConfig {
   spreadSheetSoftwarePath: string;
   phases: Array<LoadTestPhase>;
   variables?: any,
-  payload:any
+  payload:any,
+  artilleryQuiet: boolean
 }
 
 // export interface LoadTestGateway {

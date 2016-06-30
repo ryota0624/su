@@ -24,6 +24,10 @@ module.exports = {
    * ss.SS -> 秒.ミリ秒
    */
   logname: 'date',
+
+  //artilleryQuiet: true
+  
+  // 
   // spreadSheetSoftwarePath: '/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel'
 };
 
