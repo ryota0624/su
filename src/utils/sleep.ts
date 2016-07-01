@@ -1,5 +1,5 @@
-export function sleep(time: number):void {
-  new Promise((res, rej) => {
+export function sleep(time: number) {
+  return new Promise((res, rej) => {
     setTimeout(() => res(), time);
   });
 }

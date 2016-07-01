@@ -53,7 +53,7 @@ export class MesureUsecase implements MesureUsecaseI {
       .then(requests => {
         _requests = requests.map(record => createRequest(Object.assign(record, { mid: metricsId })))
       })
-      .then(() => this.serverlog.get({ path: config.serverlogPath }))
+      .then(() => this.serverlog.get({ path: config.serverlogPath, num: _requests.length }))
       .then(serverlogs => {
         _computers = serverlogs.map(record => createComputer(Object.assign(record.computer, { mid: metricsId })));
         _processes = serverlogs.map(record => createProcess(Object.assign(record.process, { mid: metricsId })));
@@ -64,6 +64,6 @@ export class MesureUsecase implements MesureUsecaseI {
         this.runningIds.push(running.id);
         this.repository.save(running);
         return running;
-      })
+      }).catch(err => console.log(err))
   }
 }

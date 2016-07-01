@@ -28,7 +28,7 @@ export default function(runnings: Array<Running>, config = { splitTime: 5, timeS
   fs.appendFileSync(`${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`, timeHeader);
   runnings.forEach(running => { runningStr(running, splitTime, timeStr, floorLen, duration)});
   if(config.fileopen) app.open(`${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`, "/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel");
-  console.log((`output > ${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`);
+  console.log(`output > ${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`);
 }
 
 function runningStr(running: Running, splitTime, timeStr, floorLen, duration) {

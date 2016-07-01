@@ -15,7 +15,7 @@ export interface ServerlogRecord {
   }
 }
 export interface Serverlog {
-  get({ path }: { path: string }): Promise<Array<ServerlogRecord>>;
+  get({ path, num }: { path: string, num: number }): Promise<Array<ServerlogRecord>>;
 }
 
 export interface ServerlogLocal {

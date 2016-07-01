@@ -3,21 +3,33 @@ import { getPromise } from '../../../utils/request';
 import { promiseReadFile } from '../../../utils/promiseFs';
 import { Serverlog, ServerlogRecord } from '../../domain/interface/readServerlog';
 import {injectable} from 'inversify';
+import { sleep } from '../../../utils/sleep';
 
 @injectable()
 export class ReadServerlogRequest implements Serverlog {
-  get({ path }): Promise<Array<ServerlogRecord>>{
+  retry: number = 0;
+  get({ path, num }): Promise<Array<ServerlogRecord>>{
+    return this.getFromServer(path).then(logs => {
+        console.log('client:', num, 'server', logs.length)
+        if(logs.length < num && this.retry < 5) {
+          this.retry++;
+          return sleep(1000).then(() => this.get({ path, num }))
+        } else {
+          return parseServerlog(logs)
+        }
+      })
+  }
+  private getFromServer(path) {
     return getPromise(path)
-    .then((result: any) => {
-      if(result.errno) {
-        console.log(`${path} へのサーバログ取得リクエストに失敗しました
-        ${result}
-        `);
-      }
-      return result
-    })
+      .then((result: any) => {
+        if(result.errno) {
+          console.log(`${path} へのサーバログ取得リクエストに失敗しました
+          ${result}
+          `);
+        }
+        return result
+      })
     .then(res => csvToArray(res.toString()))
-    .then(raw => parseServerlog(raw))
   }
 }
 @injectable()
