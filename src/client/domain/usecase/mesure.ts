@@ -4,9 +4,9 @@ import { Serverlog } from '../interface/readServerlog';
 import { RunningRepository } from '../interface/repository/runningRepository';
 import { createMetrics } from '../model/metrics';
 import Running, { createRunning } from '../model/running';
-import { createComputer } from '../model/computer';
-import { createProcess } from '../model/process';
-import { createRequest } from '../model/request';
+import Computer, { createComputer } from '../model/computer';
+import Process, { createProcess } from '../model/process';
+import Request, { createRequest } from '../model/request';
 import {injectable, inject} from 'inversify';
 
 export interface MesureUsecaseI {
@@ -43,27 +43,26 @@ export class MesureUsecase implements MesureUsecaseI {
       })
   }
   private task(config: SutyClientConfig) {
-    let _requests = null;
-    let _computers = null;
-    let _processes = null;
-    const metricsId = (new Date).getTime();
-    const runningId = metricsId;
+    const runningId = (new Date).getTime();
     return this.loadTest.run(config)
-      .then(() => this.clientlog.get({ path: config.clientlogPath }))
-      .then(requests => {
-        _requests = requests.map(record => createRequest(Object.assign(record, { mid: metricsId })))
-      })
-      .then(() => this.serverlog.get({ path: config.serverlogPath, num: _requests.length }))
-      .then(serverlogs => {
-        _computers = serverlogs.map(record => createComputer(Object.assign(record.computer, { mid: metricsId })));
-        _processes = serverlogs.map(record => createProcess(Object.assign(record.process, { mid: metricsId })));
-      })
-      .then(() => createMetrics({ id: metricsId, rid: runningId ,requests: _requests, processes: _processes, computers: _computers }))
-      .then(metrics => createRunning({ name: config.logname, id: runningId, duration: config.duration, arrivalRate: config.rate }, [metrics]))
+      .then(() => this.createMetrics(config, runningId))
+      .then(metrics => createRunning({ name: config.logname, id: runningId, duration: config.duration, arrivalRate: config.rate }, metrics))
       .then(running => {
         this.runningIds.push(running.id);
         this.repository.save(running);
         return running;
       }).catch(err => console.log(err))
+  }
+  private createMetrics(config, runningId) {
+    const metricsId = runningId;
+    return this.clientlog.get({ path: config.clientlogPath })
+      .then(requests => requests.map((record, i) => createRequest(Object.assign(record, { mid: metricsId }))))
+      .then((requests) => this.serverlog.get({
+        path: config.serverlogPath, num: requests.length
+      }).then(serverlogs => {
+        const computers = serverlogs.map((record, i) => createComputer(Object.assign(record.computer, { mid: metricsId + i })));
+        const processes = serverlogs.map((record, i) => createProcess(Object.assign(record.process, { mid: metricsId + i })));
+        return requests.map((request, i) => createMetrics({ id: metricsId + i, rid: runningId, request, computer: computers[i], process: processes[i] }))
+      }))
   }
 }

@@ -36,24 +36,24 @@ export default function(runnings: Array<Running>, config = { splitTime: 5, timeS
 }
 
 function processStr(running: Running, splitTime, timeStr, floorLen, duration, filename) {
-  try {
-    const filenames = [];
-    const separateTimeStr = timeBase(timeStr, splitTime);
-    let headerPropElementNum = null/**ヘッダーの１プロパティごとの数値の数 */
-    const propAverageObject = running.metricses.map(metrics => {
-      const formatMetrics = metrics.setCapacityMB();
-      const splitPidProcesses = formatMetrics.getProcessStatus();
+  // try {
+  //   const filenames = [];
+  //   const separateTimeStr = timeBase(timeStr, splitTime);
+  //   let headerPropElementNum = null/**ヘッダーの１プロパティごとの数値の数 */
+  //   const propAverageObject = running.metricses.map(metrics => {
+  //     const formatMetrics = metrics.setCapacityMB();
+  //     const splitPidProcesses = formatMetrics.getProcessStatus();
 
-      return splitPidProcessProcessStr(splitPidProcesses, separateTimeStr, floorLen);
-    });
-    const propStrArr = propAverageObject.map(props => {
-      const lineName = running.name;
-      return props.map(prop => {
-        return `${running.name}-${running.duration}-${running.arrivalRate}` +","+ prop.processes.pid[0] +"," + prop.processes.heapTotal + "," + prop.processes.heapUsed + "\n";
-      }).join("");
-    }).join('\n');
-    fs.appendFileSync(filename, propStrArr);
-  } catch(err) {console.log(err)}
+  //     return splitPidProcessProcessStr(splitPidProcesses, separateTimeStr, floorLen);
+  //   });
+  //   const propStrArr = propAverageObject.map(props => {
+  //     const lineName = running.name;
+  //     return props.map(prop => {
+  //       return `${running.name}-${running.duration}-${running.arrivalRate}` +","+ prop.processes.pid[0] +"," + prop.processes.heapTotal + "," + prop.processes.heapUsed + "\n";
+  //     }).join("");
+  //   }).join('\n');
+  //   fs.appendFileSync(filename, propStrArr);
+  // } catch(err) {console.log(err)}
 }
 
 const paramsFilter = params => {

@@ -61,8 +61,6 @@ export function createMetrics(param: {
   id: number;
   rid: number;
 }) {
-  const request = createRequest(param.request);
-  const process = createProcess(param.process);
-  const computer = createComputer(param.computer);
+  const { request, process, computer } = param;
   return new Metrics({ request, process, computer, id: param.id, rid: param.rid });
 }
