@@ -47,18 +47,18 @@ export class MesureUsecase implements MesureUsecaseI {
     let _computers = null;
     let _processes = null;
     const metricsId = (new Date).getTime();
-    const runningId = metricsId.toString();
+    const runningId = metricsId;
     return this.loadTest.run(config)
       .then(() => this.clientlog.get({ path: config.clientlogPath }))
       .then(requests => {
         _requests = requests.map(record => createRequest(Object.assign(record, { mid: metricsId })))
       })
-      .then(() => this.serverlog.get({ path: config.serverlogPath }))
+      .then(() => this.serverlog.get({ path: config.serverlogPath, num: _requests.length }))
       .then(serverlogs => {
         _computers = serverlogs.map(record => createComputer(Object.assign(record.computer, { mid: metricsId })));
         _processes = serverlogs.map(record => createProcess(Object.assign(record.process, { mid: metricsId })));
       })
-      .then(() => createMetrics({ id: metricsId, rid: runningId ,requests: _requests, processes: _processes, computers: _computers }).setTimeFormat(config.timeformat))
+      .then(() => createMetrics({ id: metricsId, rid: runningId ,requests: _requests, processes: _processes, computers: _computers }))
       .then(metrics => createRunning({ name: config.logname, id: runningId, duration: config.duration, arrivalRate: config.rate }, [metrics]))
       .then(running => {
         this.runningIds.push(running.id);

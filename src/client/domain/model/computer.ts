@@ -20,6 +20,15 @@ export default class Computer {
     const formatedTime = moment(this.relativeTime).format(format);
     return new Computer(Object.assign({}, this, { relativeTime: formatedTime }));
   }
+  setCapacity(str: string /** mb, kb */) {
+    let divied = 1024;
+    if(str === "mb") {
+      divied = divied * 1024;
+    }
+    const osFreeMem = Math.floor(this.osFreeMem / divied);
+    const osTotalMem = Math.floor(this.osTotalMem / divied);
+    return new Computer(Object.assign({}, this, { osFreeMem, osTotalMem }));
+  }
 }
 
 const defaultParams = {

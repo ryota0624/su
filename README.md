@@ -11,8 +11,6 @@ npm i
 ## テスト
 - サーバーへリクエストを送り結果をcsvファイルで出力する
 
-
-
 ## config
 - サーバ
 su_server.config.jsを記述
@@ -25,19 +23,21 @@ su_client.config.js
 module.exports = {
   target: 'http://localhost:3030', //テストの攻撃先となるサーバURL
   /*
-  scenarios 
-    テストの実行シナリオ
+  scenarios :テストの実行シナリオ
     flowは配列で配列内のオブジェクトの順序にそってリクエストを送信する
     flow内の要素オブジェクトのプロパティ名がhttpメソッド名になっていて
     リクエスト先のurlをurlプロパティとして所持したオブジェクトをもつ
   **/
   scenarios: [
     {
-      'flow': [{'post': {url: '/hoge'}},{'get': {url: '/huga'}} ]
+      'flow': [
+        {'post': {url: '/hoge'}},
+        {'get': {url: '/huga?id={{ id }}'}} 
+      ]
     }
   ]
   /*
-  テストシナリオの実行を記述する
+  phases: テストシナリオの実行を記述する
   phasesは配列で配列内のオブジェクトの順序にそってシナリオを実行する
   テストシナリオを実行するphaseでは
     duration(シナリオ実行時間), arrivalRate(リクエストのレート/秒), name(csvログファイルに出力する際の名前)を持ったオブジェクトを持つ
@@ -47,6 +47,17 @@ module.exports = {
     {'duration': 3, 'arrivalRate': 30 , 'name': 'hoge'},
     {'duration': 6, 'arrivalRate': 50, 'name': 'High load phase'}
   ],
+  /*
+  
+  /* scenarios内に埋め込める変数 配列からランダムで選ばれ、リクエストに埋め込まれる **/
+  variables: {
+    id: ["1", "2"]
+  }
+
+  cab: "mb", //heapUsedなどメモリーの項目の単位指定(kb, mb) デフォルトはkb
+
+   **/
+  artilleryQuiet: true //負荷実行中の実行ログを止める デフォルトではfalse
 
   spreadSheetSoftwarePath: '/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel'
   /**
@@ -78,7 +89,8 @@ npm run client -> テストの開始
 |npm run client:sec|秒リクエスト到着のテスト開始からの相対時間を秒単位でログを出力する状態で実行
 |npm run client:msec|リクエスト到着のテスト開始からの相対時間をミリ秒単位でログを出力する状態で実行
 |npm run client:min|リクエスト到着のテスト開始からの相対時間を分単位でログを出力する状態で実行
-|npm run client:quick [logname] [duration] [arrivalRate]| [duration]秒間に[arrivalRate]/1sec リクエストで実行する、[logname]でcsv出力される状態で実行 シナリオはsu_client.config.jsのscenarios配列の先頭のものが使われる
+|npm run client:quick [duration] [arrivalRate]| [duration]秒間に[arrivalRate]/1sec リクエストで実行する シナリオはsu_client.config.jsのscenarios配列の先頭のものが使われる
+|npm run client:onlyAttack|サーバへの負荷だけおこなう
 
 |serverコマンド|詳細
 |:---|:---|
@@ -87,6 +99,15 @@ npm run client -> テストの開始
 
 |その他コマンド|詳細
 |:--|:--|
+|npm run readserverStat [logfilepath]|[logfilepath]からcsvファイルを読み込みサマリー反映できるようにsutilleryに取り込む
+
+|npm run summary:sec [duration] [split] [open]|[duration]秒の間の値を[split]秒区切りに平均したものを出力
+|npm run summary:min [duration] [split] [open]|[duration]分の間の値を[split]秒区切りに平均したものを出力
+|npm run summary:sec:computer [duration] [split] [open]|コンピュータの状態を[duration]秒の間の値を[split]秒区切りに平均したものを出力
+|npm run summary:min:computer [duration] [split] [open]|コンピュータの状態を[duration]分の間の値を[split]秒区切りに平均したものを出力
+|npm run summary:sec:process [duration] [split] [open]|各プロセスの状態を[duration]秒の間の値を[split]秒区切りに平均したものを出力
+|npm run summary:min:process [duration] [split] [open]|各プロセスの状態を[duration]分の間の値を[split]秒区切りに平均したものを出力
+||[open]に"open"文字列で生成ファイルを開く
 
 |npm run clean|sutillery内のログを削除
 
@@ -112,8 +133,7 @@ startDate,time,pid,rss/MB,heapUsed/MB,heapTotal/MB,osFreeMem/MB,osTotalMem/MB,la
 ```
 ヘッダーの詳細
 ```
-startDate -> clientの実行開始時間
-time -> server側の負荷開始時間からの相対時間
+relativeTime -> server側の負荷開始時間からの相対時間
 pid -> プロセスのID
 rss/MB -> regident set size
 heapUsed/MB -> ログ出力された時のプロセスの使用heap量
@@ -124,3 +144,4 @@ la/1min,la/5min,la/15min -> 1分, 5分, 15分の ロードアベレージ
 responseTime -> レスポンスまでにかかった時間
 
 ```
+

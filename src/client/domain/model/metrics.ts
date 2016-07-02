@@ -1,6 +1,8 @@
 import Request, {createRequest} from './request';
 import Process, {createProcess} from './process';
 import Computer,{createComputer} from './computer';
+import { objectAverage } from '../../../utils/object';
+
 import * as _ from 'lodash';
 export default class Metrics {
   id: number;
@@ -14,6 +16,20 @@ export default class Metrics {
     this.computer = param.computer;
     this.id = param.id;
     this.rid = param.rid;
+  }
+  private setCapacity(str) {
+    const process = this.process.setCapacity(str);
+    const computer = this.computer.setCapacity(str);
+    return new Metrics(Object.assign({}, this, {
+      process,
+      computer
+    }))
+  }
+  setCapacityMB() {
+    return this.setCapacity('mb');
+  }
+  setCapacityKB() {
+    return this.setCapacity('kb');
   }
   setTimeFormat(format) {
     const process = this.process.setTimeFormat(format);
@@ -35,6 +51,7 @@ export default class Metrics {
   //   const chunkArr = _.chunk(this[propname], futureSize);
   //   return chunkArr.map(arr => objectAverage(arr, pass)).map(ave => fun(ave));
   // }
+
 }
 
 export function createMetrics(param: {
@@ -49,18 +66,3 @@ export function createMetrics(param: {
   const computer = createComputer(param.computer);
   return new Metrics({ request, process, computer, id: param.id, rid: param.rid });
 }
-
-
-function objectAverage(objArr, pass: Array<string> = []) :any {
-  const keys = Object.keys(objArr[0]);
-  const keyProps = keys.map(key => {
-    if (pass.indexOf(key) !== -1) return { [key]: objArr[0][key] };
-    return {
-      [key]: objArr.reduce((pre, cur, index) => {
-        const div = index === 0 ? 1 : 2;
-        return (pre + cur[key]) / div;
-      }, 0)
-    };
-  });
-  return keyProps.reduce((cur, pre) => Object.assign({}, cur, pre), {});
-};

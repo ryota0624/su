@@ -1,3 +1,3 @@
 export interface ExternalApp {
-  open(filename: string)
+  open(filename: string, appPath: string)
 }

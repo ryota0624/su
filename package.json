@@ -7,19 +7,30 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -f logs/client/*; rm -f logs/server/*; rm -f logs/status/*;> logs/fileDB.json",
     "compile": "tsc -w --outDir js",
-    "clean:src": "rm -f src/**/*.js",
+    "clean:src": "rm -rf js/*",
+
     "client": "node js/client/entry client",
-    "client:sec": "node js/client/entry client ss",
-    "client:msec": "node js/client/entry client msec ss.SSS",
-    "client:min": "node js/client/entry client mm",
-    "client:h": "node js/client/entry client hh",
+    "client:sec": "node js/client/entry client ss.SSS",
+    "client:msec": "node js/client/entry client SSS",
+    "client:min": "node js/client/entry client mm.ss",
+    "client:h": "node js/client/entry client hh.mm",
     "client:onlyAttack": "node js/client/entry onlyAttack",
-    "mergelog": "node js/client/entry mergelog",
-    "server": "node js/server/single/index",
-    "server:cluster": "node js/server/cluster/index",
     "client:quick": "node js/client/entry quick",
-    "client:timeGrouped": "node js/client/entry client:timeGrouped",
-    "test:client": "node js/client/entry test:client"
+    
+
+    "summary:sec:process": "node js/client/entry summary sec process",
+    "summary:min:process": "node js/client/entry summary min process",
+
+    "summary:sec:computer": "node js/client/entry summary sec computer",
+    "summary:min:computer": "node js/client/entry summary min computer",
+
+    "summary:sec": "node js/client/entry summary sec _",
+    "summary:min": "node js/client/entry summary min _",
+
+    "readserverStat": "node js/client/entry readserverStat",
+    
+    "server": "node js/server/single/index",
+    "server:cluster": "node js/server/cluster/index"
   },
   "keywords": [],
   "author": "",

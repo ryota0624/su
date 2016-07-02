@@ -5,5 +5,6 @@ export interface RunningRepository {
   init()
   commit()
   getAllId()
+  getAllRunning()
 }
 

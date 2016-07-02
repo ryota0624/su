@@ -1,4 +1,4 @@
-import Metrics from './metrics';
+import Metrics, { createMetrics } from './metrics';
 export default class Running {
   name: string;
   id: number;
@@ -15,5 +15,5 @@ export default class Running {
 }
 export function createRunning(param: { name: string, id: number, duration: number, arrivalRate: number }, metricses: Array<Metrics>) {
   const { name, id, duration, arrivalRate } = param;
-  return new Running({ metricses, id, duration, arrivalRate, name });
+  return new Running({ metricses: metricses, id, duration, arrivalRate, name });
 }
