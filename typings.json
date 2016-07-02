@@ -4,7 +4,14 @@
     "lodash": "registry:npm/lodash#4.0.0+20160416211519"
   },
   "globalDependencies": {
+    "es2015": "registry:env/es2015#1.0.0+20160526151700",
+    "es2015-object": "registry:env/es2015-object#1.0.0+20160526151700",
+    "es2015-promise": "registry:env/es2015-promise#1.0.0+20160526151700",
+    "express": "registry:dt/express#4.0.0+20160317120654",
+    "express-serve-static-core": "registry:dt/express-serve-static-core#0.0.0+20160322035842",
+    "inversify": "registry:dt/inversify#2.0.0-beta.9+20160623004628",
+    "mime": "registry:dt/mime#0.0.0+20160316155526",
     "node": "registry:env/node#6.0.0+20160610031852",
-    "promise": "registry:dt/promise#7.1.1+20160602154553"
+    "serve-static": "registry:dt/serve-static#0.0.0+20160501131543"
   }
 }

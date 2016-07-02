@@ -5,11 +5,32 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rm -f logs/client/*; rm -f logs/server/*",
-    "compile": "tsc --outDir js",
-    "clean:src": "rm -f src/**/*.js",
+    "clean": "rm -f logs/client/*; rm -f logs/server/*; rm -f logs/status/*;> logs/fileDB.json",
+    "compile": "tsc -w --outDir js",
+    "clean:src": "rm -rf js/*",
+
     "client": "node js/client/entry client",
-    "test:client": "node js/client/entry test:client"
+    "client:sec": "node js/client/entry client ss.SSS",
+    "client:msec": "node js/client/entry client SSS",
+    "client:min": "node js/client/entry client mm.ss",
+    "client:h": "node js/client/entry client hh.mm",
+    "client:onlyAttack": "node js/client/entry onlyAttack",
+    "client:quick": "node js/client/entry quick",
+    
+
+    "summary:sec:process": "node js/client/entry summary sec process",
+    "summary:min:process": "node js/client/entry summary min process",
+
+    "summary:sec:computer": "node js/client/entry summary sec computer",
+    "summary:min:computer": "node js/client/entry summary min computer",
+
+    "summary:sec": "node js/client/entry summary sec _",
+    "summary:min": "node js/client/entry summary min _",
+
+    "readserverStat": "node js/client/entry readserverStat",
+    
+    "server": "node js/server/single/index",
+    "server:cluster": "node js/server/cluster/index"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +38,11 @@
   "dependencies": {
     "artillery": "^1.5.0-5",
     "artillery-core": "^1.8.2",
-    "lodash": "^4.13.1"
+    "express": "^4.14.0",
+    "inversify": "^2.0.0-beta.10",
+    "lodash": "^4.13.1",
+    "moment": "^2.13.0",
+    "reflect-metadata": "^0.1.3"
   },
   "devDependencies": {
     "typescript": "^1.8.10",

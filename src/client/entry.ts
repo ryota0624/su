@@ -1,21 +1,31 @@
 import * as fs from 'fs';
-import mesureContoller from './controller/mesure';
-import mesureTestContoller from './controller/mesureTest';
-import { ProcessStatusRepoFS } from './repository/processStatus';
+import "reflect-metadata";
+import mesureContoller from './adaptor/controller/mesure';
+import onlyAttackContoller from './adaptor/controller/onlyAttack';
+import quickMesureController from './adaptor/controller/quickMesure';
+import summaryController from './adaptor/controller/summary';
+import readserverStatController from './adaptor/controller/readserverStat';
+
 const clientConfig = require(`${process.env.PWD}/su_client.config.js`);
-const processStatusRepo = new ProcessStatusRepoFS;
-
-const processStatusRepom = new ProcessStatusRepoFS;
-processStatusRepom.readFromResource(process.env.PWD + "/logs/status/date.3.30.csv")
-  .then(() => console.log(processStatusRepom)).catch(er => console.log(er));
-
 switch (process.argv[2]) {
   case 'client': {
-    mesureContoller(clientConfig, processStatusRepo);
+    mesureContoller(clientConfig);
     break;
   }
-  case 'test:client': {
-    mesureTestContoller(clientConfig, processStatusRepo);
+  case 'onlyAttack': {
+    onlyAttackContoller(clientConfig);
+    break;
+  }
+  case 'quick': {
+    quickMesureController(clientConfig);
+    break;
+  }
+  case 'summary': {
+    summaryController(clientConfig);
+    break;
+  }
+  case 'readserverStat': {
+    readserverStatController();
     break;
   }
 }

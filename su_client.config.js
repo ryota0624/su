@@ -1,35 +1,30 @@
 module.exports = {
-  target: 'http://localhost:3000',//標的となるurl
-  duration: 3, //テストする期間 second
-  rate: 30, //リクエストの送信レート
-  timeformat: 'ss', //サンプルを増やす milli secでとりたい時
+  target: 'http://localhost:3333',//標的となるurl
+  // duration: 3, //テストする期間 second
+  // rate: 30, //リクエストの送信レート
+  timeformat: 'ss.S', //サンプルを増やす milli secでとりたい時
   timeout: 30,
   phases: [
-      {"duration": 3, "arrivalRate": 5, "name": "Warm-up"},
-      {"pause": 10},
-      {"duration": 3, "arrivalCount": 30 },
-      {"duration": 6, "arrivalRate": 50, "name": "High load phase"}
+      {"duration": 3, "arrivalRate": 50, "name": "Warm-up"},
+      // {"duration": 30, "arrivalRate": 30 , "name": "hoge"},
+      // {"duration": 30, "arrivalRate": 50, "name": "High load phase"}
     ],
-  // scenarios: [
-  //   {
-  //     'flow': [{'get': {url: '/ad?spotId=4'}}]
-  //   }
-  // ],
-  // variables: {
-    
-  // },
+  scenarios: [
+    {
+      'flow': [
+        {'get': {url: '/ad?spotId={{ id }}'}}, 
+        {'get': {url: '/hoge?spotId={{ id }}'}}
+      ]
+    },
+  ],
+  variables: {
+    id: ["1","2","3","4"]
+  },
+  //cap: "mb", //memory系の表示単位 kb, mb
   /**
    * ss.SS -> 秒.ミリ秒
    */
-  logname: 'date',
-  outputdir: __dirname + '/report',
-  convertedOutput:  __dirname + '/convertedLog',
-  spreadSheetSoftwarePath: '/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel'
+
+  //artilleryQuiet: true //artilleryQuietが黙って実行される
+  spreadSheetSoftwarePath: '/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel' //コマンド実行後指定したアプリケーションで出力ファイルを開く
 };
-
-//終わった後エクセル開く
-// excel path 表計算ソフトのpath
-
-// 
-
-//todo target => targetURL
