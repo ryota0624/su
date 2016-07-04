@@ -11,8 +11,9 @@ export default function summaryController(config: SutyClientConfig) {
   parametorCheck(timeStr, summaryType, duration, splitTime);
   const presenter = getPresenter(summaryType);
   const usecase = kernel.get<SummaryUsecaseI>("SummaryUsecaseI");
-  usecase.run()
-  .then(running => presenter(running, { duration: Number(duration), timeStr, splitTime: Number(splitTime), throughProps: [], fileopen: o === "open" ? true: false }));
+  const presenterConfig = { duration: Number(duration), timeStr, splitTime: Number(splitTime), throughProps: [], fileopen: o === "open" ? true: false };
+  usecase.run(running => presenter(running, presenterConfig))
+  // .then(running => presenter(running, { duration: Number(duration), timeStr, splitTime: Number(splitTime), throughProps: [], fileopen: o === "open" ? true: false }));
 }
 
 function getPresenter(presenterName) {

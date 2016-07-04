@@ -96,11 +96,10 @@ npm run client -> テストの開始
 
 |その他コマンド|詳細
 |:--|:--|
-|npm run readserverStat [logfilepath]|[logfilepath]からcsvファイルを読み込みサマリー反映できるようにsutilleryに取り込む
 |npm run summary:sec [duration] [split] [open]|[duration]秒の間の値を[split]秒区切りに平均したものを出力
 |npm run summary:min [duration] [split] [open]|[duration]分の間の値を[split]秒区切りに平均したものを出力
 ||[open]に"open"文字列で生成ファイルを開く
-
+|npm run readserverStat [logfilepath]|[logfilepath]からcsvファイルを読み込みサマリー反映できるようにsutilleryに取り込む
 |npm run clean|sutillery内のログを削除
 
 ## テストされるモジュールのルール

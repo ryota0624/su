@@ -14,6 +14,6 @@ export default function mesureController(config: SutyClientConfig) {
     return testConfig
   });
   const usecase = kernel.get<MesureUsecaseI>("MesureUsecaseI");
-  usecase.run(tasks)
-    .then(running => presenter(running, config));
+  usecase.run(tasks, (running) => presenter(running, config))
+    // .then(running => (running, config));
 }

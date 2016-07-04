@@ -23,8 +23,7 @@ export default function quickMesureController(config: SutyClientConfig) {
   testConfig.scenarios = null;
   const task: Array<SutyClientConfig> = [testConfig];
   const usecase = kernel.get<MesureUsecaseI>("MesureUsecaseI");
-  usecase.run(task)
-    .then(running => presenter(running, config));
+  usecase.run(task, (running) => presenter(running, config))
 }
 
 function argvError({ rate, duration, target }) {

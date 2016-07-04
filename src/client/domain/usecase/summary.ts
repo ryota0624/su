@@ -11,7 +11,7 @@ import { createRequest } from '../model/request';
 import {injectable, inject} from 'inversify';
 
 export interface SummaryUsecaseI {
-  run(): Promise<Array<Running>>;
+  run(cb: (running: Array<Running>) => void): Promise<Array<Running>>;
 }
 
 @injectable()
