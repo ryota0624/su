@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rm -f logs/client/*; rm -f logs/server/*; rm -f logs/status/*;> logs/fileDB.json",
+    "clean": "rm -f logs/client/*; rm -f logs/server/*; rm -f logs/summary/*; rm -f logs/status/*;> logs/fileDB.json",
     "compile": "tsc -w --outDir js",
     "clean:src": "rm -rf js/*",
 
@@ -16,16 +16,11 @@
     "client:h": "node js/client/entry client hh.mm",
     "client:onlyAttack": "node js/client/entry onlyAttack",
     "client:quick": "node js/client/entry quick",
-    
-
-    "summary:sec:process": "node js/client/entry summary sec process",
-    "summary:min:process": "node js/client/entry summary min process",
-
-    "summary:sec:computer": "node js/client/entry summary sec computer",
-    "summary:min:computer": "node js/client/entry summary min computer",
 
     "summary:sec": "node js/client/entry summary sec _",
     "summary:min": "node js/client/entry summary min _",
+
+    "report:artillery": "artillery report",
 
     "readserverStat": "node js/client/entry readserverStat",
     

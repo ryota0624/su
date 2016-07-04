@@ -9,29 +9,42 @@ import {timeBase, groupedTime, propsLine} from './helper/summaryHelper';
 
 import {DefaultApp, AssignedApp} from '../gateway/externalApp';
 
-let header = ["pid", "osFreeMem", "osTotalMem", "la/1min", "la/5min", "la/15min", "heapTotal", "heapUsed", "responseTime", "statusCode"];
+const header = ["pid", "osFreeMem", "osTotalMem", "la/1min", "la/5min", "la/15min", "heapTotal", "heapUsed", "responseTime"];
+const oneHeaderProp = ["pid"];
+const headerMap = new Map<string, string>([["osFreeMem", "osFreeMem/mb"], ["osFreeMem", "osFreeMem/mb"], ["relativeTime", "relativeTime/ms"], ["responseTime", "responseTime/ms"], ['heapUsed', "heapUsed/mb"], ['heapTotal', 'heapTotal/mb']] );
+
 const app = new AssignedApp;
 
-export default function (runnings: Array<Running>, config = { splitTime: 5, timeStr: "sec", duration: 30, throughProps: ["statusCode"], fileopen: true }) {
-  header = header.filter(propName => config.throughProps.indexOf(propName) === -1 ? true : false);
+export default function (runnings: Array<Running>, config = { splitTime: 5, timeStr: "sec", duration: 30, fileopen: true }) {
   const { splitTime, timeStr, duration } = config;
   const floorLen = Number((duration / splitTime).toFixed());
-  const timeHeader = "," + _.range(0, header.length).map(() => _.range(0, floorLen).map((t, index) => {
-    const startTime = index === 0 ? 0 : (index) * splitTime;
-    const endTime = (index + 1) * splitTime;
-    return `${startTime} ~${endTime}(${timeStr})`;
-  }).join(',')).join(',') + "\n";
-  const headers = "name," + header.map((prop) => {
-    return [prop].concat(Array.from({ length: floorLen - 1 })).join(',');
+  const concreateHeader = "name," + header.map((prop) => {
+    if(oneHeaderProp.indexOf(prop) !== -1) return [prop];
+    const concreatePropName = headerMap.get(prop);
+    const convProp = concreatePropName ? concreatePropName : prop;
+    return [convProp].concat(Array.from({ length: floorLen - 1 })).join(',');
   }).join(',') + '\n';
-  fs.writeFileSync(`${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`, headers);
-  fs.appendFileSync(`${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`, timeHeader);
-  runnings.forEach(running => { runningStr(running, splitTime, timeStr, floorLen, duration) });
-  if (config.fileopen) app.open(`${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`, "/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel");
-  console.log(`output > ${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`);
+  const timeHeader = "," + _.range(0, header.length).map((i) => {
+    if(oneHeaderProp.indexOf(header[i]) !== -1) return ;
+    return _.range(0, floorLen).map((t, index) => {
+      const startTime = index === 0 ? 0 : (index) * splitTime;
+      const endTime = (index + 1) * splitTime;
+      return `${startTime} ~${endTime}(${timeStr})`;
+    }).join(',')
+  }).join(',') + "\n";
+
+  const filepath = `${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`;
+
+  fs.writeFileSync(filepath, concreateHeader);
+  fs.appendFileSync(filepath, timeHeader);
+  runnings.forEach(running => { runningStr(running, splitTime, timeStr, floorLen, duration, filepath) });
+  if (config.fileopen) app.open(filepath, "/Applications/Microsoft Excel.app/Contents/MacOS/Microsoft Excel");
+  console.log(`output > ${filepath}`);
 }
 
-function runningStr(running: Running, splitTime, timeStr, floorLen, duration) {
+function runningStr(running: Running, splitTime, timeStr, floorLen, duration, filepath) {
+  const pids = running.metricses.map((metrics) => metrics.process.pid).filter((key, index, arr) => arr.indexOf(key) === index);
+  const processDivMetricses = pids.map(pid => running.metricses.filter(metrics => metrics.process.pid === pid));
   try {
     const convMetrics = (rawMetricses: Metrics[]) => {
       const metricses = rawMetricses.map(metrics => metrics.setCapacityMB());
@@ -43,11 +56,14 @@ function runningStr(running: Running, splitTime, timeStr, floorLen, duration) {
     };
     const filenames = [];
     const separateTimeStr = timeBase(timeStr, splitTime);
-    const propAverageObject = convMetrics(running.metricses);
-    const propLineStr = `${running.name}-${running.duration}-${running.arrivalRate}` + "," + header.map(prop => {
-      if (propAverageObject[prop]) return propAverageObject[prop].join(',');
+    const propAverageObjectArr = processDivMetricses.map(metricses => convMetrics(metricses));
+    propAverageObjectArr.forEach(line => {
+      const str = `${running.name}-${running.duration}-${running.arrivalRate}` + "," + header.map(prop => {
+      if(oneHeaderProp.indexOf(prop) !== -1 && line[prop]) return line[prop][0];
+      if (line[prop]) return line[prop].join(',');
       else return ",";
-    }) + "\n";
-    fs.appendFileSync(`${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`, propLineStr);
+      }) + "\n";
+      fs.appendFileSync(`${process.env.PWD}/logs/summary/summary-duration${duration}-split${splitTime}.csv`, str);
+    })
   } catch (err) { console.log(err) }
 }

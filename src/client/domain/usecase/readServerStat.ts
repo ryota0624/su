@@ -4,7 +4,7 @@ import { createMetrics } from '../model/metrics';
 import Running, { createRunning } from '../model/running';
 import { createComputer } from '../model/computer';
 import { createProcess } from '../model/process';
-import { createRequest } from '../model/request';
+import Request,{ createRequest } from '../model/request';
 import {injectable, inject} from 'inversify';
 
 export interface ReadServerStatUsecaseI {
@@ -26,18 +26,16 @@ export class ReadServerStatUsecase implements ReadServerStatUsecaseI {
   run(url: string) {
     const filenameArr = url.split(/\/|\.|js|csv/).filter(i => Boolean(i));
     const filename = filenameArr[filenameArr.length -1];
-    let _computers = null;
-    let _processes = null;
     const metricsId = (new Date).getTime();
     const runningId = metricsId;
     return this.serverlog.get({ path: url })
     .then(serverlogs => {
         if(serverlogs.length === 0) throw new Error("serverlogが存在していません")
-        _computers = serverlogs.map(record => createComputer(Object.assign(record.computer, { mid: metricsId })));
-        _processes = serverlogs.map(record => createProcess(Object.assign(record.process, { mid: metricsId })));
+        const computers = serverlogs.map(record => createComputer(Object.assign(record.computer, { mid: metricsId })));
+        const processes = serverlogs.map(record => createProcess(Object.assign(record.process, { mid: metricsId })));
+        return computers.map((request, i) => createMetrics({ id: metricsId + i, rid: runningId, request: new Request, computer: computers[i], process: processes[i] }))
     })
-    .then(() => createMetrics({ id: metricsId, rid: runningId ,requests: [], processes: _processes, computers: _computers }))
-    .then(metrics => createRunning({ name: filename+".server", id: runningId, duration: 0, arrivalRate: 0 }, [metrics]))
+    .then(metricses => createRunning({ name: filename+".server", id: runningId, duration: 0, arrivalRate: 0 }, metricses))
     .then((running) => {
       this.repository.save(running);
       this.repository.commit();

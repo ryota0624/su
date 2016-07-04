@@ -13,7 +13,7 @@ export default class Process {
     this.mid = param.mid;
   }
   setTimeFormat(format:string) {
-    const formatedTime = moment(this.relativeTime).format(format);//this.relativeTime
+    const formatedTime = moment(Number(this.relativeTime)).format(format);//this.relativeTime
     return new Process(Object.assign({}, this, { relativeTime: formatedTime }));
   }
   setCapacity(str: string /** mb, kb */) {

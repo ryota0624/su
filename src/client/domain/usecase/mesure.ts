@@ -53,6 +53,7 @@ export class MesureUsecase implements MesureUsecaseI {
         return running;
       }).catch(err => console.log(err))
   }
+
   private createMetrics(config, runningId) {
     const metricsId = runningId;
     return this.clientlog.get({ path: config.clientlogPath })

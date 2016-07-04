@@ -17,7 +17,7 @@ export default class Computer {
     this['la/15min'] = Number(param['la/15min']);
   }
   setTimeFormat(format:string) {
-    const formatedTime = moment(this.relativeTime).format(format);
+    const formatedTime = moment(Number(this.relativeTime)).format(format);
     return new Computer(Object.assign({}, this, { relativeTime: formatedTime }));
   }
   setCapacity(str: string /** mb, kb */) {

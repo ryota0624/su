@@ -28,4 +28,7 @@ switch (process.argv[2]) {
     readserverStatController();
     break;
   }
+  case 'artilleryReport': {
+    
+  }
 }

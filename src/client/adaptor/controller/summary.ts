@@ -1,5 +1,4 @@
 import { SummaryUsecaseI } from '../../domain/usecase/summary';
-import { configCreator } from './helper/index';
 import { SutyClientConfig } from '../../domain/interface/loadTest';
 import kernel from '../../inversify.config';
 import computerPresenter from '../presenter/summaryComputer';

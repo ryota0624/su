@@ -34,6 +34,7 @@ export default class Metrics {
   setTimeFormat(format) {
     const process = this.process.setTimeFormat(format);
     const computer = this.computer.setTimeFormat(format);
+    console.log(process)
     return new Metrics(Object.assign({}, this, {
       process,
       computer

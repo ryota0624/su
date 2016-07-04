@@ -8,12 +8,17 @@ export function parse(line, header) {
 export function groupedTime(target: Array<any>, config = { fixed: false }) {
   const timeGrouped = _.groupBy(target, 'relativeTime');
   const keys = Object.keys(timeGrouped);
-  const fn = config.fixed ? (a) => Math.floor(a) : (a) => a ;
+  const fn = config.fixed ? (a) => floorNum(a, 2) : (a) => a ;
   const averages = keys.map((time) => {
     const through = ["mid", "relativeTime", "pid", "statusCode"];
     return objectAverage(timeGrouped[time], through, fn);
   });
   return averages;
+}
+
+export function floorNum(num, n) {
+  const pow = Math.pow(10, n);
+  return Math.floor(num * pow) / pow
 }
 
 export function timeBase(str ,num) {
