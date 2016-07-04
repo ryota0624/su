@@ -14,6 +14,6 @@ export default function onlyAttackController(config: SutyClientConfig) {
     return testConfig
   });
   const usecase = kernel.get<OnlyAttackUsecaseI>("OnlyAttackUsecaseI");
-  usecase.run(tasks).then(() => onlyAttackPresenter(tasks));
+  usecase.run(tasks, () => onlyAttackPresenter(tasks))//.then(() => );
 }
 
