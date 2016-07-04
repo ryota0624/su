@@ -53,9 +53,6 @@ module.exports = {
   variables: {
     id: ["1", "2"]
   }
-
-  cab: "mb", //heapUsedなどメモリーの項目の単位指定(kb, mb) デフォルトはkb
-
    **/
   artilleryQuiet: true //負荷実行中の実行ログを止める デフォルトではfalse
 
@@ -89,8 +86,8 @@ npm run client -> テストの開始
 |npm run client:sec|秒リクエスト到着のテスト開始からの相対時間を秒単位でログを出力する状態で実行
 |npm run client:msec|リクエスト到着のテスト開始からの相対時間をミリ秒単位でログを出力する状態で実行
 |npm run client:min|リクエスト到着のテスト開始からの相対時間を分単位でログを出力する状態で実行
-|npm run client:quick [duration] [arrivalRate]| [duration]秒間に[arrivalRate]/1sec リクエストで実行する シナリオはsu_client.config.jsのscenarios配列の先頭のものが使われる
-|npm run client:onlyAttack|サーバへの負荷だけおこなう
+|npm run client:onlyAttack|su_client.config.jsからサーバへの負荷だけおこなう
+|npm run client:quick [duration] [arrivalRate] [target_url]| [target_url]に[duration]秒間に[arrivalRate]/1sec リクエストで負荷実行する
 
 |serverコマンド|詳細
 |:---|:---|
@@ -100,13 +97,8 @@ npm run client -> テストの開始
 |その他コマンド|詳細
 |:--|:--|
 |npm run readserverStat [logfilepath]|[logfilepath]からcsvファイルを読み込みサマリー反映できるようにsutilleryに取り込む
-
 |npm run summary:sec [duration] [split] [open]|[duration]秒の間の値を[split]秒区切りに平均したものを出力
 |npm run summary:min [duration] [split] [open]|[duration]分の間の値を[split]秒区切りに平均したものを出力
-|npm run summary:sec:computer [duration] [split] [open]|コンピュータの状態を[duration]秒の間の値を[split]秒区切りに平均したものを出力
-|npm run summary:min:computer [duration] [split] [open]|コンピュータの状態を[duration]分の間の値を[split]秒区切りに平均したものを出力
-|npm run summary:sec:process [duration] [split] [open]|各プロセスの状態を[duration]秒の間の値を[split]秒区切りに平均したものを出力
-|npm run summary:min:process [duration] [split] [open]|各プロセスの状態を[duration]分の間の値を[split]秒区切りに平均したものを出力
 ||[open]に"open"文字列で生成ファイルを開く
 
 |npm run clean|sutillery内のログを削除
