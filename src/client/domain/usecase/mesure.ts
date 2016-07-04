@@ -8,6 +8,7 @@ import Computer, { createComputer } from '../model/computer';
 import Process, { createProcess } from '../model/process';
 import Request, { createRequest } from '../model/request';
 import {injectable, inject} from 'inversify';
+import { promiseSucc } from '../../../utils/promise';
 
 export interface MesureUsecaseI {
   run(tasks: Array<SutyClientConfig>, cb: (running: Array<Running>) => void): Promise<Array<Running>>;
@@ -34,12 +35,14 @@ export class MesureUsecase implements MesureUsecaseI {
 
   run(tasks: Array<SutyClientConfig>, cb) {
     this.repository.init();
-    return tasks
-      .map(config => () => this.task(config))
-      .reduce((pre: any, cur) => pre.then(cur), Promise.resolve(0))
-      .then(() => {
+    const promisies = tasks
+      .map(config => () => this.task(config));
+      // .reduce((pre: any, cur) => pre.then(cur), Promise.resolve(0))
+    return promiseSucc<Running>(promisies)
+      .then((runnings) => {
+        console.log(runnings)
         this.repository.commit();
-        return cb(this.runningIds.map(id => this.repository.getById(id)));
+        return cb(runnings);
       })
   }
   private task(config: SutyClientConfig) {
