@@ -27,6 +27,7 @@ export default class Process {
   }
 }
 
-export function createProcess(param = { mid: 0, pid: 0, heapUsed: 0, heapTotal: 0, relativeTime: 0 }) {
-  return new Process(param);
+export function createProcess(mid: number, param = { pid: 0, heapUsed: 0, heapTotal: 0, relativeTime: 0 }) {
+  const { pid, heapTotal, heapUsed, relativeTime } = param;
+  return new Process({ pid, heapTotal, heapUsed, relativeTime, mid });
 }

@@ -26,13 +26,13 @@ export class RunningRepositoryFS implements RunningRepository {
     if(str.length > 0) str.toString().split('|').forEach(entryStr => {
       const entry = JSON.parse(entryStr);
       const metricses = entry[1].metricses.map(obj => {
-        const request = createRequest(obj.request);
-        const computer = createComputer(obj.computer);
-        const process = createProcess(obj.process);
-        return createMetrics(Object.assign({}, obj, { request, process, computer }));
+        const request = createRequest(obj.request.mid, obj.request);
+        const computer = createComputer(obj.request.mid, obj.computer);
+        const process = createProcess(obj.request.mid, obj.process);
+        return createMetrics(obj.id, obj.rid, { request, process, computer });
       });
 
-      const running = createRunning(Object.assign({}, entry[1]), metricses);
+      const running = createRunning(entry[1].id, entry[1], metricses);
       this.data.set(entry[0], running);
     })
   }

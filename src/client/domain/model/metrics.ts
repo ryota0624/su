@@ -55,13 +55,11 @@ export default class Metrics {
 
 }
 
-export function createMetrics(param: {
+export function createMetrics(id: number, rid: number, param: {
   request: Request;
   process: Process;
   computer: Computer;
-  id: number;
-  rid: number;
 }) {
   const { request, process, computer } = param;
-  return new Metrics({ request, process, computer, id: param.id, rid: param.rid });
+  return new Metrics({ request, process, computer, id, rid });
 }

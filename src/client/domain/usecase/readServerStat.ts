@@ -31,11 +31,13 @@ export class ReadServerStatUsecase implements ReadServerStatUsecaseI {
     return this.serverlog.get({ path: url })
     .then(serverlogs => {
         if(serverlogs.length === 0) throw new Error("serverlogが存在していません")
-        const computers = serverlogs.map(record => createComputer(Object.assign(record.computer, { mid: metricsId })));
-        const processes = serverlogs.map(record => createProcess(Object.assign(record.process, { mid: metricsId })));
-        return computers.map((request, i) => createMetrics({ id: metricsId + i, rid: runningId, request: new Request, computer: computers[i], process: processes[i] }))
+        return serverlogs.map((record, i) => {
+          const computer = createComputer(metricsId + i, record.computer);
+          const process = createProcess(metricsId + i, record.process);
+          return createMetrics(metricsId + i, runningId, { request: new Request, computer, process })
+        });
     })
-    .then(metricses => createRunning({ name: filename+".server", id: runningId, duration: 0, arrivalRate: 0 }, metricses))
+    .then(metricses => createRunning(runningId, { name: filename+".server", duration: 0, arrivalRate: 0 }, metricses))
     .then((running) => {
       this.repository.save(running);
       this.repository.commit();

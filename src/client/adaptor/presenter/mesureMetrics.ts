@@ -26,7 +26,8 @@ export default function (runnings: Array<Running>, config?) {
     
       fs.writeFileSync(outputname, concretaHeader);
       metricses.forEach(metrics => {
-        const m = metrics.setCapacityMB();
+        let m = metrics.setCapacityMB();
+        m.request.responseTime = Math.ceil(m.request.responseTime / 10000) / 100;
         fs.appendFileSync(outputname, parse(m));
       });
       if (config.spreadSheetSoftwarePath) {

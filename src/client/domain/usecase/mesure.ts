@@ -46,24 +46,23 @@ export class MesureUsecase implements MesureUsecaseI {
     const runningId = (new Date).getTime();
     return this.loadTest.run(config)
       .then(() => this.createMetrics(config, runningId))
-      .then(metrics => createRunning({ name: config.logname, id: runningId, duration: config.duration, arrivalRate: config.rate }, metrics))
+      .then(metricses => createRunning(runningId, { name: config.logname, duration: config.duration, arrivalRate: config.rate }, metricses))
       .then(running => {
         this.runningIds.push(running.id);
         this.repository.save(running);
         return running;
-      }).catch(err => console.log(err))
+      })
   }
 
   private createMetrics(config, runningId) {
     const metricsId = runningId;
     return this.clientlog.get({ path: config.clientlogPath })
-      .then(requests => requests.map((record, i) => createRequest(Object.assign(record, { mid: metricsId }))))
-      .then((requests) => this.serverlog.get({
-        path: config.serverlogPath, num: requests.length
-      }).then(serverlogs => {
-        const computers = serverlogs.map((record, i) => createComputer(Object.assign(record.computer, { mid: metricsId + i })));
-        const processes = serverlogs.map((record, i) => createProcess(Object.assign(record.process, { mid: metricsId + i })));
-        return requests.map((request, i) => createMetrics({ id: metricsId + i, rid: runningId, request, computer: computers[i], process: processes[i] }))
-      }))
+      .then(requests => requests.map((record, i) => createRequest(metricsId, record)))
+      .then((requests) => this.serverlog.get({ path: config.serverlogPath, num: requests.length })
+        .then(serverlogs => serverlogs.map((record, i) => {
+          const computer = createComputer(metricsId + i, record.computer);
+          const process = createProcess(metricsId + i, record.process);
+          return createMetrics(metricsId + i, runningId, { request: requests[i], computer, process })
+        })))
   }
 }

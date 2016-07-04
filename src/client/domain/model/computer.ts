@@ -41,14 +41,13 @@ const defaultParams = {
   mid: 0,
 }
 
-export function createComputer(param: {
+export function createComputer(mid: number, param: {
   'la/1min': number;  
   'la/5min': number;
   'la/15min': number;
   osFreeMem: number;
   osTotalMem: number;
   relativeTime: number;
-  mid: number;
 }) {
-    return new Computer(param);
+  return new Computer(Object.assign(param, { mid }));
 }

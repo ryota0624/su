@@ -9,6 +9,7 @@ export default class Request {
   }
 }
 
-export function createRequest(param: { mid: number, responseTime: number, statusCode: number }) {
-  return new Request(param);
+export function createRequest(mid: number, param: { responseTime: number, statusCode: number }) {
+  const { responseTime, statusCode } = param;
+  return new Request({ mid, responseTime, statusCode });
 }

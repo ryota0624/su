@@ -13,7 +13,7 @@ export default class Running {
     this.metricses = param.metricses;
   }
 }
-export function createRunning(param: { name: string, id: number, duration: number, arrivalRate: number }, metricses: Array<Metrics>) {
-  const { name, id, duration, arrivalRate } = param;
+export function createRunning(id: number, param: { name: string,duration: number, arrivalRate: number }, metricses: Array<Metrics>) {
+  const { name, duration, arrivalRate } = param;
   return new Running({ metricses: metricses, id, duration, arrivalRate, name });
 }

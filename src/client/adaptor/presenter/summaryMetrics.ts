@@ -51,7 +51,8 @@ function runningStr(running: Running, splitTime, timeStr, floorLen, duration, fi
       const lines = metricses.map(metrics => Object.assign({}, metrics.computer, metrics.process, metrics.request))
         .map((record: any) => Object.assign({}, record, { relativeTime: Math.floor(record.relativeTime / separateTimeStr) }));
       const timeAverage = groupedTime(lines, { fixed: true });
-      const propAverage: any = propsLine(timeAverage, floorLen);
+      let propAverage: any = propsLine(timeAverage, floorLen);
+      propAverage.responseTime = propAverage.responseTime.map(responseTime => Math.ceil(responseTime / 10000)/100 )
       return propAverage;
     };
     const filenames = [];

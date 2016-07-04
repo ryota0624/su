@@ -82,12 +82,12 @@ npm run client -> テストの開始
 
 |clientコマンド|詳細
 |:---|:---|
+|npm run client:quick [duration] [arrivalRate] [target_url]| [target_url]に[duration]秒間に[arrivalRate]/1sec リクエストで負荷実行する
 |npm run client|configファイル基準で実行
 |npm run client:sec|秒リクエスト到着のテスト開始からの相対時間を秒単位でログを出力する状態で実行
 |npm run client:msec|リクエスト到着のテスト開始からの相対時間をミリ秒単位でログを出力する状態で実行
 |npm run client:min|リクエスト到着のテスト開始からの相対時間を分単位でログを出力する状態で実行
 |npm run client:onlyAttack|su_client.config.jsからサーバへの負荷だけおこなう
-|npm run client:quick [duration] [arrivalRate] [target_url]| [target_url]に[duration]秒間に[arrivalRate]/1sec リクエストで負荷実行する
 
 |serverコマンド|詳細
 |:---|:---|
@@ -121,7 +121,7 @@ module.exports = (request, response, next) => {
 ## 出力log
 csv形式で出力
 ```
-startDate,time,pid,rss/MB,heapUsed/MB,heapTotal/MB,osFreeMem/MB,osTotalMem/MB,la/1min,la/5min,la/15min,statusCode,responseTime
+relativeTime,pid,rss/MB,heapUsed/MB,heapTotal/MB,osFreeMem/MB,osTotalMem/MB,la/1min,la/5min,la/15min,statusCode,responseTime
 ```
 ヘッダーの詳細
 ```
